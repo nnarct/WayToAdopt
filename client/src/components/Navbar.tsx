@@ -1,19 +1,18 @@
+import { useNavigate, Link } from "react-router-dom";
 import { Avatar, Button, Dropdown, Flex, Image } from "antd";
-
 import {
   AppstoreAddOutlined,
   UserOutlined,
   SearchOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { useNavigate, Link } from "react-router-dom";
-import AuthService from "@/services/AuthService";
 import useAuth from "@/hooks/useAuth";
+import AuthService from "@/services/AuthService";
 import logo from "@/assets/images/logo.svg";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+// type Props = {};
+// props: Props
+const Navbar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
