@@ -1,25 +1,25 @@
-import useLogin from "@/hooks/useAuth";
 import {
   Form,
   Button,
   Input,
-  Alert,
   Flex,
   Typography,
   Card,
   Image,
 } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import useAuth from "@/hooks/useAuth";
 import logo from "@/assets/images/logo_white.svg";
-// import type { FormProps } from "antd";
-// type FieldType = {
-//   email?: string;
-//   password?: string;
-// };
+import ErrorAlert from "@/components/shared/ErrorAlert";
+
+type FieldType = {
+  email?: string;
+  password?: string;
+};
 
 const LoginPage = () => {
-  const { email, setEmail, password, setPassword, error, isLoading, login } =
-    useLogin();
+  const { login, errorLogin, isLoggingIn } = useAuth();
+  const [form] = Form.useForm<FieldType>();
 
   return (
     <Flex
@@ -36,7 +36,13 @@ const LoginPage = () => {
         เข้าสู่ระบบ
       </Typography.Title>
       <Card className="max-w-lg w-full">
-        <Form onFinish={login} layout="vertical">
+        <Form<FieldType>
+          form={form}
+          onFinish={() =>
+            login(form.getFieldValue("email"), form.getFieldValue("password"))
+          }
+          layout="vertical"
+        >
           <Form.Item
             validateTrigger={"onSubmit"}
             label="Email"
@@ -44,7 +50,9 @@ const LoginPage = () => {
             rules={[
               {
                 type: "email",
-                message: `Please include an '@' in the email address. ${email} missing an '@'.`,
+                message: `Please include an '@' in the email address. ${form.getFieldValue(
+                  "email"
+                )} missing an '@'.`,
               },
               {
                 required: true,
@@ -55,9 +63,7 @@ const LoginPage = () => {
             {/* Use Input component from antd */}
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              value={email}
               placeholder="email@example.com"
-              onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Item>
           <Form.Item
@@ -69,18 +75,16 @@ const LoginPage = () => {
             {/* Use Input.Password component from antd for password */}
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
-              value={password}
               placeholder="password"
-              onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item className="flex justify-center">
             {/* Disable the button if form is submitting */}
-            <Button type="primary" htmlType="submit" loading={isLoading}>
+            <Button type="primary" htmlType="submit" loading={isLoggingIn}>
               Login
             </Button>
           </Form.Item>
-          {error && <Alert type="error" message={error} />}
+          <ErrorAlert text={errorLogin}/>
         </Form>
       </Card>
     </Flex>
