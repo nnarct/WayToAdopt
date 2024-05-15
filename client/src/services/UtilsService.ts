@@ -1,11 +1,10 @@
-// utilsService.js
-const UtilsService = {
-  formatAge: (dob: number): string => {
+class UtilsService {
+  static formatAge(dob: number): string {
     // dob is Epoch
     if (!dob) {
       return "-";
     }
-    
+
     const currentDate = new Date();
 
     const birthDate = new Date(dob);
@@ -35,7 +34,11 @@ const UtilsService = {
     } else {
       return `${yearDiff} ปี ${monthDiff} เดือน`;
     }
-  },
-};
+  }
+
+  static getDob(dob: number): string {
+    return "01 มค. 2545";
+  }
+}
 
 export default UtilsService;
