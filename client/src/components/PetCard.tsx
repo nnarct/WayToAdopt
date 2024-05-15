@@ -16,6 +16,9 @@ const PetCard = ({ id }: { id?: number }) => {
     petBreed: "คอร์กี้",
     petAge: 1681100448,
   };
+  if (!id) {
+    return null;
+  }
 
   return (
     <>
@@ -57,7 +60,7 @@ const PetCard = ({ id }: { id?: number }) => {
                 </DescriptionCard>
               </Flex>
             </Flex>
-            <Link to={`/Adoption`} state={{ postIi: id }}>
+            <Link to={`/petdetails/${id}`}>
               <Button
                 type="primary"
                 className="h-12 w-full mx-auto rounded-[16px] text-xl"

@@ -15,11 +15,11 @@ const HomePage = () => {
           </span>
         </Typography.Title>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 sm:justify-between gap-y-8 gap-x-10 lg:gap-x-16">
-          <PetCard />
-          <PetCard />
-          <PetCard />
-          <PetCard />
-          <PetCard />
+          <PetCard id={1} />
+          <PetCard id={2} />
+          <PetCard id={3} />
+          <PetCard id={4} />
+          <PetCard id={5} />
         </div>
       </>
     </>
