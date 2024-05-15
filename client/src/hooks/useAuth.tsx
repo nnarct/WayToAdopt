@@ -1,66 +1,66 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import AuthService from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
 
-const useLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+const useAuth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(AuthService.isAuthenticated());
+  const [errorLogin, setErrorLogin] = useState< string>("");
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const [errorLogout, setErrorLogout] = useState< string>("");
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const navigate = useNavigate();
-  const login = async () => {
-    setIsLoading(true);
+
+  const login = async (email: string, password: string) => {
+    setIsLoggingIn(true);
+    setErrorLogin("");
     try {
-      const isLoggedIn = await AuthService.login(email, password);
-      if (isLoggedIn) {
+      // const isLoggedIn = await AuthService.login(email, password);
+      // if (isLoggedIn) {
+      if (true) {
         console.log("Login successful");
-    
-        // Redirect or perform further actions upon successful login
+        setIsAuthenticated(true);
+        navigate("/");
       } else {
-        setError("Invalid email or password");
+        setErrorLogin("Invalid email or password");
+        return false;
       }
     } catch (error) {
-      setError("An error occurred during login");
+      setErrorLogin("An error occurred during login");
       console.error(error);
     } finally {
-      setIsLoading(false);
+      setIsLoggingIn(false);
     }
   };
 
   const logout = async () => {
-    setIsLoading(true);
+    setIsLoggingOut(true);
+    setErrorLogout("");
     try {
       const isLoggedOut = await AuthService.logout();
-      console.log(isLoggedOut)
       if (isLoggedOut) {
         console.log("Logout successful");
-    
-        // Redirect or perform further actions upon successful login
+        setIsAuthenticated(false);
+        navigate("/");
       } else {
-        setError("Invalid email or password");
+        setErrorLogout("Failed to logout");
       }
     } catch (error) {
-      setError("An error occurred during login");
+      setErrorLogout("An error occurred during logout");
       console.error(error);
     } finally {
-      setIsLoading(false);
+      setIsLoggingOut(false);
     }
-  }
-
-  useEffect(() => {
-    if (AuthService.isAuthenticated()) navigate("/");
-  }, [navigate, isLoading]);
+  };
 
   return {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    error,
-    isLoading,
+    isAuthenticated,
+    errorLogin,
+    isLoggingIn,
+    isLoggingOut,
+    errorLogout,
     login,
-    logout
+    logout,
   };
 };
 
-export default useLogin;
+export default useAuth;
