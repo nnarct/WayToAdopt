@@ -4,4 +4,5 @@ export const PATH_NAMES: { [key: string]: string } = {
   editpf: "แก้ไขข้อมูลส่วนตัว",
   pdetail: "รายละเอียดโพสต์",
   petdetails: "รายละเอียดสัตว์เลี้ยง",
+  answerslist: "รายการคำตอบ",
 };

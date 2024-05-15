@@ -11,12 +11,13 @@ import Layout from "./Layout";
 import LoginPage from "@/pages/LoginPage";
 import HomePage from "@/pages/HomePage";
 import SignupPage from "@/pages/SignupPage";
+import PetDetailsPage from "@/pages/PetDetailsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import MyPosts from "@/pages/MyPosts";
 // import PetDetailPost from "@/pages/PetDetailsPage";
 // import AdoptionSubmission from "@/pages/AdoptionSubmission";
 import Post from "@/pages/Post";
-import PetDetailsPage from "@/pages/PetDetailsPage";
+import PostAnswersPage from "@/pages/PostAnswersPage";
 
 import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
@@ -42,7 +43,8 @@ const App = () => {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/profile/editpf" element={<ProfilePage />} />
                 <Route path="/myposts" element={<MyPosts />} />
-                <Route path="/myposts/pdetail" element={<Post />} />
+                <Route path="/myposts/pdetail/:postID" element={<Post />} />
+                <Route path="/myposts/pdetail/answerslist/:postID" element={<PostAnswersPage/>} />
                 <Route
                   path="/petdetails/:postID"
                   element={<PetDetailsPage />}
