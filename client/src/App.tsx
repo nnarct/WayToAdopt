@@ -1,20 +1,25 @@
 import {
   BrowserRouter as Router,
   Route,
-  Navigate,
   Routes,
+  Navigate,
   Outlet,
 } from "react-router-dom";
 import { ConfigProvider } from "antd";
+import AuthService from "@/services/AuthService";
+import Layout from "./Layout";
 import LoginPage from "@/pages/LoginPage";
 import HomePage from "@/pages/HomePage";
 import SignupPage from "@/pages/SignupPage";
 import ProfilePage from "@/pages/ProfilePage";
-import OwnerDashboard from "@/pages/OwnerDashboard";
-import PetDetailPost from "@/pages/PetDetailPost";
-import AdoptionSubmission from "@/pages/AdoptionSubmission";
-import AuthService from "@/services/AuthService";
-import Layout from "./Layout";
+import MyPosts from "@/pages/MyPosts";
+// import PetDetailPost from "@/pages/PetDetailsPage";
+// import AdoptionSubmission from "@/pages/AdoptionSubmission";
+import Post from "@/pages/Post";
+import PetDetailsPage from "@/pages/PetDetailsPage";
+
+import ContentCard from "@/components/shared/ContentCard";
+import Page404 from "@/components/shared/Page404";
 
 const App = () => {
   return (
@@ -28,21 +33,19 @@ const App = () => {
       >
         <Router>
           <Routes>
-            <Route path="*" element={<Navigate to={"/"} />} />
-            <Route element={<UserWrapper />}>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-            </Route>
-            <Route element={<PrivateWrapper />}>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route element={<Layout />}>
+              <Route path="/*" element={<Page404 />} />
+              <Route index element={<HomePage />} />
+              <Route element={<PrivateRoute />}>
                 <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-                <Route path="/pet-details/:postId" element={<PetDetailPost />} />
-                {/* <Route path="/pet-post" element={<PetDetailPost />} /> */}
+                <Route path="/profile/editpf" element={<ProfilePage />} />
+                <Route path="/myposts" element={<MyPosts />} />
+                <Route path="/myposts/pdetail" element={<Post />} />
                 <Route
-                  path="/adoption-submission"
-                  element={<AdoptionSubmission />}
+                  path="/petdetails/:postID"
+                  element={<PetDetailsPage />}
                 />
               </Route>
             </Route>
@@ -53,15 +56,16 @@ const App = () => {
   );
 };
 
-const PrivateWrapper = () => {
+// Guard routes for authenticated users
+const PrivateRoute = () => {
   const isAuthenticated = AuthService.isAuthenticated();
-  console.log({ isAuthenticated });
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
-};
-const UserWrapper = () => {
-  const isAuthenticated = AuthService.isAuthenticated();
-  console.log({ isAuthenticated });
-  return isAuthenticated ? <Navigate to="/" /> : <Outlet />;
+  return isAuthenticated ? (
+    <ContentCard>
+      <Outlet />
+    </ContentCard>
+  ) : (
+    <Navigate to="/" replace />
+  );
 };
 
 export default App;
