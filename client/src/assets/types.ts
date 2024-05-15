@@ -17,3 +17,10 @@ export interface PostDetailsType {
   status: number;
   petPic: string;
 }
+
+export interface AnswerListType {
+  id: string;
+  firstName: string;
+  lastName: string;
+  createdAt: number;
+}

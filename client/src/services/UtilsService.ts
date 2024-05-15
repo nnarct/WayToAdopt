@@ -36,7 +36,7 @@ class UtilsService {
     }
   }
 
-  static getDob(dob: number): string {
+  static formatDate(date: number): string {
     return "01 มค. 2545";
   }
 }
