@@ -1,11 +1,11 @@
 import { Button, Typography } from "antd";
-import useAuth from "@/hooks/useAuth";
 import UtilsService from "@/services/UtilsService";
 import ContentCard from "@/components/shared/ContentCard";
 import DescriptionCard from "@/components/shared/DescriptionCard";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProfilePage = () => {
-  const { logout } = useAuth();
+  const { clearAuth } = useAuth();
 
   const user = {
     firstName: "fnametest",
@@ -16,7 +16,7 @@ const ProfilePage = () => {
     sex: 0, // 0male 1female
   };
 
-  return (<> code here</>);
+  return <> code here</>;
 };
 
 export default ProfilePage;

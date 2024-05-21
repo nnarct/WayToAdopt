@@ -1,48 +1,56 @@
-import {
-  Form,
-  Button,
-  Input,
-  Flex,
-  Typography,
-  Card,
-  Image,
-} from "antd";
+import { Form, Button, Input, Flex, Typography, Card, Image } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import useAuth from "@/hooks/useAuth";
+
 import logo from "@/assets/images/logo_white.svg";
 import ErrorAlert from "@/components/shared/ErrorAlert";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
+import {useNavigate } from "react-router-dom";
 
 type FieldType = {
-  email?: string;
-  password?: string;
+  email: string;
+  password: string;
 };
 
 const LoginPage = () => {
-  const { login, errorLogin, isLoggingIn } = useAuth();
+  const { token, setAuth } = useAuth();
+  const navigate = useNavigate();
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const login = async (values: FieldType) => {
+    setIsLoggingIn(true);
+    setAuth(values.email, values.password);
+    setIsLoggingIn(false);
+    if (token) {
+      navigate("/");
+    }
+  };
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate, token]);
   const [form] = Form.useForm<FieldType>();
 
   return (
     <Flex
       vertical
       align="center"
-      className="bg-[#2e4b5d] w-screen h-screen text-white lg:justify-center overflow-auto pb-20 px-6 "
+      className="bg-gradient-to-l to-secondary from-sky-200 w-screen h-screen text-white lg:justify-center overflow-auto pb-20 px-6 "
     >
       <Image
+        onClick={() => {
+          navigate("/");
+        }}
         src={logo}
         style={{ maxWidth: 510 }}
         className="mt-10 sm:mt-20 md:mt-24 lg:mt-0"
+        preview={false}
       />
       <Typography.Title level={3} style={{ color: "white" }}>
         เข้าสู่ระบบ
       </Typography.Title>
       <Card className="max-w-lg w-full">
-        <Form<FieldType>
-          form={form}
-          onFinish={() =>
-            login(form.getFieldValue("email"), form.getFieldValue("password"))
-          }
-          layout="vertical"
-        >
+        <Form form={form} onFinish={login} layout="vertical">
           <Form.Item
             validateTrigger={"onSubmit"}
             label="Email"
@@ -50,9 +58,7 @@ const LoginPage = () => {
             rules={[
               {
                 type: "email",
-                message: `Please include an '@' in the email address. ${form.getFieldValue(
-                  "email"
-                )} missing an '@'.`,
+                message: `Please include an '@' in the email address.`,
               },
               {
                 required: true,
@@ -81,11 +87,31 @@ const LoginPage = () => {
           <Form.Item className="flex justify-center">
             {/* Disable the button if form is submitting */}
             <Button type="primary" htmlType="submit" loading={isLoggingIn}>
-              Login
+              เข้าสู่ระบบ
             </Button>
           </Form.Item>
-          <ErrorAlert text={errorLogin}/>
+          {/* <ErrorAlert text={errorLogin} /> */}
         </Form>
+        <Flex align="center" justify="center">
+          <Typography.Text
+            style={{
+              fontSize: 18,
+              paddingRight: 12,
+              fontWeight: 500,
+            }}
+          >
+            หากยังไม่มีบัญชีผู้ใช้งานโปรด
+          </Typography.Text>
+          <Typography.Link
+            onClick={() => navigate("/signup")}
+            style={{
+              fontSize: 18,
+              fontWeight: 500,
+            }}
+          >
+            ลงทะเบียน
+          </Typography.Link>
+        </Flex>
       </Card>
     </Flex>
   );
