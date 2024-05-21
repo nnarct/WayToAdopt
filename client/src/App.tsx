@@ -44,7 +44,10 @@ const App = () => {
                 <Route path="/profile/editpf" element={<ProfilePage />} />
                 <Route path="/myposts" element={<MyPosts />} />
                 <Route path="/myposts/pdetail/:postID" element={<Post />} />
-                <Route path="/myposts/pdetail/answerslist/:postID" element={<PostAnswersPage/>} />
+                <Route
+                  path="/myposts/pdetail/answerslist/:postID"
+                  element={<PostAnswersPage />}
+                />
                 <Route
                   path="/petdetails/:postID"
                   element={<PetDetailsPage />}
@@ -60,7 +63,7 @@ const App = () => {
 
 // Guard routes for authenticated users
 const PrivateRoute = () => {
-  const {token} = useAuth()
+  const { token } = useAuth();
 
   return token ? (
     <ContentCard>

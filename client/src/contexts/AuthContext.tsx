@@ -1,11 +1,5 @@
+import { AuthContextType } from "@/assets/types";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-
-interface AuthContextType {
-  token: string | null;
-  expires: string | null;
-  setAuth: (token: string, expires: string) => void;
-  clearAuth: () => void;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -32,11 +26,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
     const storedExpires = localStorage.getItem("expires");
-    if (storedToken && storedExpires) {
-      setToken(storedToken);
-      setExpires(storedExpires);
+    if (storedExpires && Number(storedExpires) > new Date().valueOf()) {
+      clearAuth();
     }
   }, []);
 

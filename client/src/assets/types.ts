@@ -1,3 +1,25 @@
+export interface AuthContextType {
+  token: string | null;
+  expires: string | null;
+  setAuth: (token: string, expires: string) => void;
+  clearAuth: () => void;
+}
+
+export interface LoginCredentialsType {
+  email: string;
+  password: string;
+}
+export interface SignupType {
+  firstName: string;
+  lastName:string;
+  dob: number;
+  gender: 0 | 1 | 2;
+  tel: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface UserProfileType {
   id: string;
   firstName: string;
