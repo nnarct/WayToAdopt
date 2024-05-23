@@ -1,20 +1,21 @@
+import axios from "axios";
 import { LoginCredentialsType } from "@/assets/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { notification } from "antd";
-import axios from "axios";
+import { loginUrl } from "@/assets/api";
 import { UseMutateFunction, useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 
 interface User {
   name: string;
 }
+
 // Function to handle login API call
 async function login(
   email: string,
   password: string
 ): Promise<{ token: string; expires: string }> {
   try {
-    const response = await axios.post("/auth/login", { email,password });
+    const response = await axios.post(loginUrl, { email, password });
 
     // return response.json();
     return response.data;
@@ -39,7 +40,6 @@ type IUseSignIn = {
 
 export function useLogin(): IUseSignIn {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { setAuth } = useAuth();
 
   const {
@@ -54,12 +54,9 @@ export function useLogin(): IUseSignIn {
   >(({ email, password }) => login(email, password), {
     onSuccess: (data) => {
       // Save the user in the state
-      console.log("success");
       setAuth(data.token, data.expires);
       // Invalidate and refetch queries that could be affected by the login
       queryClient.invalidateQueries("user");
-
-      // navigate("/");
     },
     onError: (error) => {
       notification.error({

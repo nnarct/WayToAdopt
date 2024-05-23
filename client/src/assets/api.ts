@@ -1,4 +1,4 @@
-export const loginUrl = ""
+export const loginUrl = "/auth/login"
 export const logoutUrl = ""
 export const signupUrl = ""
 export const getProfileUrl = ""
