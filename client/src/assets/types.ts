@@ -11,7 +11,7 @@ export interface LoginCredentialsType {
 }
 export interface SignupType {
   firstName: string;
-  lastName:string;
+  lastName: string;
   dob: number;
   gender: 0 | 1 | 2;
   tel: string;
@@ -31,12 +31,21 @@ export interface UserProfileType {
 }
 
 export interface PostDetailsType {
-  postID: string;
+  id: string;
   postTitle: string;
   petType: string;
   petBreed: string;
   petDob: number;
   status: number;
+  petPic: string;
+}
+
+export interface PostCard {
+  id: string;
+  postTitle: string;
+  petType: string | null;
+  petBreed: string;
+  petDob: number;
   petPic: string;
 }
 
