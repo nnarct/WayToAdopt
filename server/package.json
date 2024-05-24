@@ -1,26 +1,34 @@
-
 {
-  "name": "wayToAdopt",
+  "name": "waytoadopt",
   "version": "3.0.0",
-  "description": "",
+  "description": "OOP web app for OOD class project. KMUTT CPE 2023",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "vanillaStart": "node index.js",
     "start": "nodemon index.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "firebase": "^10.12.1"
+    "firebase": "^10.12.1",
+    "firebase-admin": "^12.1.1"
   },
   "devDependencies": {
     "bcrypt": "^5.1.0",
     "nodemon": "^2.0.22"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nnarct/WayToAdopt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nnarct/WayToAdopt/issues"
+  },
+  "homepage": "https://github.com/nnarct/WayToAdopt#readme"
 }
