@@ -10,7 +10,7 @@ const registerUser = async (userData: SignupType) => {
     const response = await axios.post(signupUrl, userData);
     return { data: response.data, status: response.status };
   } catch (error) {
-    return { data: { message: "Registration failed", status: 500 } };
+    return { data: { message: "Registration failed" }, status: 500 };
   }
 };
 
