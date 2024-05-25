@@ -1,4 +1,4 @@
-import { Button, Row, Col } from "antd";
+import { Button, Row, Col, Flex, Typography } from "antd";
 import DescriptionCard from "@/components/shared/DescriptionCard";
 
 import dayjs from "dayjs";
@@ -32,76 +32,50 @@ const ProfilePage: React.FC = () => {
   if (isError) return <SomethingWentWrong />;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "24px",
-        minHeight: "calc(80vh - 150px)",
-        padding: "24px",
-      }}
-    >
-      <div
-        style={{
-          border: "2px solid #9F9F9F",
-          borderRadius: 20,
-          background: "#D9D9D900",
-          padding: "34px",
-          width: "100%",
-          maxWidth: "800px",
-        }}
-      >
-        {/* {isEditing && (
+    <>
+      {/* {isEditing && (
              <EditableProfilePage
                user={user}
                onSave={handleSave}
                onCancel={handleCancel}
              />)} */}
+      <Typography.Title level={2}>ข้อมูลผู้ใช้งาน</Typography.Title>
+      <div className="border-2 border-[#9F9F9F] mx-auto p-8 max-w-xl rounded-xl grid grid-cols-2 gap-4">
+        <DescriptionCard vertical title="ชื่อจริง">
+          {user.firstName}
+        </DescriptionCard>
 
-        <Row gutter={[16, 16]} justify="space-between">
-          <Col span={11}>
-            <DescriptionCard title="ชื่อจริง">{user.firstName}</DescriptionCard>
-          </Col>
-          <Col span={11}>
-            <DescriptionCard title="นามสกุล">{user.lastName}</DescriptionCard>
-          </Col>
-          <Col span={11}>
-            <DescriptionCard title="วันเกิด (ค.ศ.)">
-              {dayjs(user.dob).format("DD MMM YYYY")}
-            </DescriptionCard>
-          </Col>
-          <Col span={11}>
-            <DescriptionCard title="เพศ">
-              {user.gender === 0 && "ชาย"}
-              {user.gender === 1 && "หญิง"}
-              {user.gender === 2 && "อื่นๆ"}
-            </DescriptionCard>
-          </Col>
-          <Col span={11}>
-            <DescriptionCard title="เบอร์โทรศัพท์">{user.tel}</DescriptionCard>
-          </Col>
-          <Col span={11}>
-            <DescriptionCard title="Email">{user.email}</DescriptionCard>
-          </Col>
-        </Row>
+        <DescriptionCard vertical title="นามสกุล">
+          {user.lastName}
+        </DescriptionCard>
+
+        <DescriptionCard vertical title="วันเกิด (ค.ศ.)">
+          {dayjs(user.dob).format("DD MMM YYYY")}
+        </DescriptionCard>
+
+        <DescriptionCard vertical title="เพศ">
+          {user.gender === 0 && "ชาย"}
+          {user.gender === 1 && "หญิง"}
+          {user.gender === 2 && "อื่นๆ"}
+        </DescriptionCard>
+
+        <DescriptionCard vertical title="เบอร์โทรศัพท์">
+          {user.tel}
+        </DescriptionCard>
+
+        <DescriptionCard vertical title="Email">
+          {user.email}
+        </DescriptionCard>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "30px",
-          padding: "20px",
-        }}
-      >
-        <Button onClick={() => setIsEditing(true)} type="primary">
+      <Flex gap={30} justify="center" className="p-5">
+        <Button onClick={() => {}} type="primary">
           แก้ไขโปรไฟล์
         </Button>
         <Button danger onClick={clearAuth}>
           ออกจากระบบ
         </Button>
-      </div>
-    </div>
+      </Flex>
+    </>
   );
 };
 
