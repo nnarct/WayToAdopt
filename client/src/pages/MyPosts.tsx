@@ -1,23 +1,25 @@
+import useGetMyPosts from "@/hooks/post/useGetMyPosts";
 import PostListItem from "@/components/PostListItem";
-import { useGetUserProfile } from "@/hooks/useUser";
-
-import AuthService from "@/services/AuthService";
-import { Button, List, Avatar } from "antd";
-import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import {
+  Loading,
+  NoPost,
+  SomethingWentWrong,
+} from "@/components/shared/Result";
 
 const MyPosts = () => {
-  // const { post, loading: loadingError, error: userError } = useGetpost();
+  const { data: posts, isLoading, isError } = useGetMyPosts();
 
-  const posts = [{ id: "1" }, { id: "2" }, { id: "3" }];
+  if (isLoading) return <Loading />;
+  if (isError) return <SomethingWentWrong />;
+  if (posts.length === 0) return <NoPost />;
 
   return (
     <>
       {/* guide */}
       Implement My Posts Here<br></br>
       {/* guide ends */}
-      {posts.map((post, index) => (
-        <PostListItem key={`postItem${index}`} postID={post.id} />
+      {posts.map((post: { id: string }) => (
+        <PostListItem key={`postItem${post.id}`} post={post} />
       ))}
     </>
   );

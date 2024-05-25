@@ -1,27 +1,31 @@
-import PetCard from "@/components/PetCard";
 import { Typography } from "antd";
+import useGetAllPosts from "@/hooks/post/useGetAllPosts";
+import PostsGrid from "@/components/features/homepage/PostsGrid";
+import {
+  Loading,
+  NoPost,
+  SomethingWentWrong,
+} from "@/components/shared/Result";
 
 const HomePage = () => {
-  // Todo
-  // get user's first [name]
-  // get all [ID] post
+  const { data, error, isLoading } = useGetAllPosts();
+
+  const renderContent = () => {
+    if (isLoading) return <Loading />;
+    if (error) return <SomethingWentWrong />;
+    if (!data || data?.length === 0) return <NoPost />;
+    return <PostsGrid posts={data} />;
+  };
+
   return (
     <>
-      <>
-        <Typography.Title className="!text-primary">
-          สัตว์ตามหาบ้าน
-          <span className="text-secondary-300 whitespace-nowrap">
-            แนะนำสำหรับคุณ
-          </span>
-        </Typography.Title>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 sm:justify-between gap-y-8 gap-x-10 lg:gap-x-16">
-          <PetCard id={1} />
-          <PetCard id={2} />
-          <PetCard id={3} />
-          <PetCard id={4} />
-          <PetCard id={5} />
-        </div>
-      </>
+      <Typography.Title level={2} className="!text-primary">
+        สัตว์ตามหาบ้าน
+        <span className="text-secondary-300 whitespace-nowrap">
+          แนะนำสำหรับคุณ
+        </span>
+      </Typography.Title>
+      {renderContent()}
     </>
   );
 };

@@ -3,67 +3,53 @@ import { Button, Flex, Image, Typography } from "antd";
 import UtilsService from "@/services/UtilsService";
 import pawIcon from "@/assets/images/paw.svg";
 import DescriptionCard from "@/components/shared/DescriptionCard";
+import { PostCard } from "@/assets/types";
 
-const PetCard = ({ id }: { id?: number }) => {
-  // Todo
-  // get [postTitle,petPic, petType, petBreed, age] from post {id}
-
-  const mock = {
-    postTitle: "หาบ้านให้น้องค่ะ ",
-    petPic:
-      "https://static.vecteezy.com/system/resources/thumbnails/005/857/332/small/funny-portrait-of-cute-corgi-dog-outdoors-free-photo.jpg",
-    petType: "หมา",
-    petBreed: "คอร์กี้",
-    petAge: 1681100448,
-  };
-  if (!id) {
-    return null;
-  }
-
+const PetCard = ({ post }: { post: PostCard }) => {
   return (
     <>
       <Flex vertical align="center">
-        <div style={{ maxWidth: 450 }}>
+        <div style={{ maxWidth: 328 }}>
           <Image
             className="image object-cover"
-            src={mock.petPic}
-            style={{ width: "100%", height: 300, borderRadius: 16 }}
+            src={post.petPic}
+            style={{ width: 328, height: 328, borderRadius: 16 }}
           />
           <Typography.Title
             level={2}
             ellipsis
-            className="py-4"
+            className="py-1"
             style={{ color: "#3c6685", fontSize: 24, fontWeight: 600 }}
           >
-            {mock.postTitle}
+            {post.postTitle}
           </Typography.Title>
-          <div className="p-6 border-2 border-[#9f9f9f] rounded-[16px] w-full">
+          <div className="p-2 border border-[#a5b1ba] rounded-md w-full">
             <Flex className="px-1 mb-5" gap={12}>
               <Flex vertical>
-                <img src={pawIcon} alt="paw-icon" />
+                <img src={pawIcon} alt="paw-icon" style={{width: 20, paddingTop: 6}}/>
               </Flex>
               <Flex className="flex-1" vertical>
                 <DescriptionCard
                   justify="space-between"
                   title="ประเภทสัตว์เลี้ยง"
                 >
-                  {mock.petType}
+                  {post.petType}
                 </DescriptionCard>
                 <DescriptionCard
                   justify="space-between"
                   title="พันธุ์สัตว์เลี้ยง"
                 >
-                  {mock.petBreed}
+                  {post.petBreed}
                 </DescriptionCard>
                 <DescriptionCard justify="space-between" title="อายุ">
-                  {UtilsService.formatAge(mock.petAge)}
+                  {UtilsService.formatAge(post.petDob)}
                 </DescriptionCard>
               </Flex>
             </Flex>
-            <Link to={`/petdetails/${id}`}>
+            <Link to={`/petdetails/${post.id}`}>
               <Button
                 type="primary"
-                className="h-12 w-full mx-auto rounded-[16px] text-xl"
+                className="py-2 h-fit w-full mx-auto "
               >
                 ดูรายละเอียดทั้งหมด
               </Button>

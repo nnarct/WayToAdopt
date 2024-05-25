@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button, Row, Col } from "antd";
 import DescriptionCard from "@/components/shared/DescriptionCard";
@@ -15,8 +16,6 @@ interface User {
   email: string;
   dob: number;
   sex: number;
-}
-
 const ProfilePage: React.FC = () => {
   const { logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -124,6 +123,7 @@ const ProfilePage: React.FC = () => {
       </div>
     </PageLayout>
   );
+
 };
 
 export default ProfilePage;
