@@ -22,6 +22,9 @@ import PostAnswersPage from "@/pages/PostAnswersPage";
 import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
 
+import Test from "@/pages/test";
+import Test2 from "@/pages/test2";
+
 const App = () => {
   return (
     <>
@@ -36,6 +39,9 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/test2" element={<Test2 />} />
+            <Route path="/test3" element={<PostAnswersPage />} />
             <Route element={<Layout />}>
               <Route path="/*" element={<Page404 />} />
               <Route index element={<HomePage />} />
@@ -44,7 +50,10 @@ const App = () => {
                 <Route path="/profile/editpf" element={<ProfilePage />} />
                 <Route path="/myposts" element={<MyPosts />} />
                 <Route path="/myposts/pdetail/:postID" element={<Post />} />
-                <Route path="/myposts/pdetail/answerslist/:postID" element={<PostAnswersPage/>} />
+                <Route
+                  path="/myposts/pdetail/answerslist/:postID"
+                  element={<PostAnswersPage />}
+                />
                 <Route
                   path="/petdetails/:postID"
                   element={<PetDetailsPage />}
