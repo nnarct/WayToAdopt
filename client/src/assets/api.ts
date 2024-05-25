@@ -1,7 +1,7 @@
 export const loginUrl = "/login"
 export const logoutUrl = ""
 export const signupUrl = "/register"
-export const getProfileUrl = ""
+export const getProfileUrl = "/profile"
 export const updateProfileUrl = ""
 export const createPostUrl = ""
 export const createSubmissionUrl = ""
