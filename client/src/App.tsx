@@ -18,7 +18,8 @@ import MyPosts from "@/pages/MyPosts";
 // import AdoptionSubmission from "@/pages/AdoptionSubmission";
 import Post from "@/pages/Post";
 import PostAnswersPage from "@/pages/PostAnswersPage";
-
+import PostIDforDetailTest from "./components/shared/PostIDforDetailTest";
+import PostDetail from "./components/PostDetail";
 import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
 
@@ -36,6 +37,9 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/petdetails/:postID" element={<PostIDforDetailTest />} />
+            <Route path="/petdetails" element={<PostDetail />} />
             <Route element={<Layout />}>
               <Route path="/*" element={<Page404 />} />
               <Route index element={<HomePage />} />

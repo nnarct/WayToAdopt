@@ -1,29 +1,26 @@
 import React from "react";
-import { Flex } from "antd";
-import { Property  } from "csstype";
+import { Space } from "antd";
+import { Property } from "csstype";
+
+interface DescriptionCardProps {
+  title: string;
+  children: React.ReactNode;
+  justify?: Property.JustifyContent;
+  align?: Property.AlignItems;
+  vertical?: boolean;
+}
 
 const DescriptionCard = ({
   title,
   children,
-  vertical,
-  flexProps,
   justify,
   align,
-}: {
-  title: string;
-  children?: React.ReactNode;
-  vertical?: boolean;
-  flexProps?: React.HTMLAttributes<HTMLElement>;
-  justify?: Property.JustifyContent;
-  align?: Property.AlignItems;
-}) => {
+}: DescriptionCardProps) => {
   return (
-    <>
-      <Flex vertical={vertical} {...flexProps} justify={justify} align={align}>
-        <div className="text-primary font-black">{title}</div>
-        <div className="text-secondary">{children}</div>
-      </Flex>
-    </>
+    <Space direction="vertical" style={{ padding: '4px 8px' }}>
+      <div style={{ fontWeight: 'bold', color: 'black' }}>{title}</div>
+      <div style={{ color: 'black' }}>{children}</div>
+    </Space>
   );
 };
 
