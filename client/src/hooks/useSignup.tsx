@@ -1,54 +1,36 @@
+import axios from "axios";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { notification } from "antd";
 import { signupUrl } from "@/assets/api";
-import axios from "axios";
-import { UseMutateFunction, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
-interface User {
-  firstName: string;
-}
-async function signUp(email: string, password: string): Promise<User> {
+import { SignupType } from "@/assets/types";
+
+const registerUser = async (userData: SignupType) => {
   try {
-    const response = await axios.post(signupUrl, { email, password });
-
-    return response.data;
+    const response = await axios.post(signupUrl, userData);
+    return { data: response.data, status: response.status };
   } catch (error) {
-    if (error.response.status === 401) {
-      throw new Error("Incorrect email or password.");
-    }
-    throw new Error("Login failed.");
+    return { data: { message: "Registration failed", status: 500 } };
   }
-}
+};
 
-type IUseSignUp = UseMutateFunction<
-  User,
-  unknown,
-  {
-    email: string;
-    password: string;
-  },
-  unknown
->;
-
-export const useSignUp = (): IUseSignUp => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  const { mutate: signUpMutation } = useMutation<
-    User,
-    unknown,
-    { email: string; password: string },
-    unknown
-  >(({ email, password }) => signUp(email, password), {
-    onSuccess: (data) => {
-      navigate("/login");
+const useSignup = () => {
+  const navigator = useNavigate();
+  return useMutation(registerUser, {
+    onSuccess: (res) => {
+      if (res.status === 200)
+        return notification.error({ message: res.data.message });
+      if (res.status === 500)
+        return notification.error({ message: res.data.message });
+      if (res.status === 201) {
+        notification.success({ message: "Sign up successfully !" });
+        navigator("/login");
+      }
     },
     onError: (error) => {
-      notification.error({
-        message: error.message,
-        placement: "bottom",
-      });
+      notification.error({ message: `Registration failed: ${error}` });
     },
   });
-
-  return signUpMutation;
 };
+
+export default useSignup;

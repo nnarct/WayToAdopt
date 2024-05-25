@@ -9,6 +9,16 @@ export interface LoginCredentialsType {
   email: string;
   password: string;
 }
+export interface SignupFormType {
+  firstName: string;
+  lastName: string;
+  dob: number;
+  gender: 0 | 1 | 2;
+  tel: any;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 export interface SignupType {
   firstName: string;
   lastName: string;
@@ -17,7 +27,6 @@ export interface SignupType {
   tel: string;
   email: string;
   password: string;
-  confirmPassword: string;
 }
 
 export interface UserProfileType {

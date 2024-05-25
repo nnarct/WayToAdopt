@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import PhoneInput from "antd-phone-input";
 import {
-  Alert,
   Button,
   Card,
   DatePicker,
@@ -11,10 +13,7 @@ import {
   FormInstance,
   Select,
 } from "antd";
-import { useNavigate } from "react-router-dom";
 import logo from "@/assets/images/logo_white.svg";
-import PhoneInput from "antd-phone-input";
-import dayjs from "dayjs";
 
 const validateMessages = {
   required: "กรุณากรอก${label}",
@@ -26,12 +25,13 @@ const validateMessages = {
 const SignupForm = ({
   onFinish,
   form,
+  loading,
 }: {
   form: FormInstance;
   onFinish: (values) => void;
+  loading?: boolean;
 }) => {
   const navigate = useNavigate();
-
   return (
     <>
       <Flex
@@ -63,7 +63,7 @@ const SignupForm = ({
               <Flex gap={24} wrap="wrap">
                 <Form.Item
                   className="flex-1"
-                  name={"userFirstName"}
+                  name={"firstName"}
                   label="ชื่อจริง (ไม่ต้องมีคำนำหน้า)"
                   rules={[{ required: true, message: "กรุณากรอกชื่อจริง" }]}
                 >
@@ -71,7 +71,7 @@ const SignupForm = ({
                 </Form.Item>
                 <Form.Item
                   className="flex-1"
-                  name={"userLastName"}
+                  name={"lastName"}
                   label="นามสกุล"
                   rules={[{ required: true }]}
                 >
@@ -82,7 +82,7 @@ const SignupForm = ({
                 <Form.Item
                   style={{ flex: 1, width: "50%" }}
                   label="วันเกิด"
-                  name={"userDOB"}
+                  name={"dob"}
                   rules={[{ required: true }]}
                 >
                   <DatePicker
@@ -95,19 +95,20 @@ const SignupForm = ({
                   />
                 </Form.Item>
                 <Form.Item
-                  name={"userGender"}
+                  name={"gender"}
                   label="เพศ"
                   style={{ flex: 1, width: "50%" }}
                   rules={[{ required: true }]}
                 >
                   <Select placeholder="Gender" allowClear>
-                    <Select.Option value={0}>male</Select.Option>
-                    <Select.Option value={1}>female</Select.Option>
+                    <Select.Option value={0}>ชาย</Select.Option>
+                    <Select.Option value={1}>หญิง</Select.Option>
+                    <Select.Option value={2}>อื่นๆ</Select.Option>
                   </Select>
                 </Form.Item>
               </Flex>
               <Form.Item
-                name={"userPhone"}
+                name={"tel"}
                 label="Phone Number"
                 rules={[
                   {
@@ -123,14 +124,14 @@ const SignupForm = ({
                 />
               </Form.Item>
               <Form.Item
-                name={"userEmail"}
+                name={"email"}
                 label="อีเมล"
                 rules={[{ required: true }]}
               >
                 <Input type="email" placeholder="example@mail.com" />
               </Form.Item>
               <Form.Item
-                name={"userPassword"}
+                name={"password"}
                 label="Password"
                 rules={[
                   {
@@ -171,7 +172,7 @@ const SignupForm = ({
                   },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue(["userPassword"]) === value) {
+                      if (!value || getFieldValue(["password"]) === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(
