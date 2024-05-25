@@ -1,4 +1,5 @@
 import PetCard from "@/components/PetCard";
+import UtilsService from "@/services/UtilsService";
 import { Typography } from "antd";
 
 const HomePage = () => {
@@ -14,6 +15,7 @@ const HomePage = () => {
             แนะนำสำหรับคุณ
           </span>
         </Typography.Title>
+        {UtilsService.formatDate(1716010021)}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 sm:justify-between gap-y-8 gap-x-10 lg:gap-x-16">
           <PetCard id={1} />
           <PetCard id={2} />

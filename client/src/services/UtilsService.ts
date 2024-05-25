@@ -1,3 +1,10 @@
+import dayjs from 'dayjs';
+import buddhistEra from 'dayjs/plugin/buddhistEra';
+import 'dayjs/locale/th'; // Import Thai locale for dayjs
+
+// Add BuddhistEra plugin to dayjs
+dayjs.extend(buddhistEra);
+
 class UtilsService {
   static formatAge(dob: number): string {
     // dob is Epoch
@@ -37,17 +44,12 @@ class UtilsService {
   }
 
   static formatDate(date: number): string {
-    const monthsThai = [
-        "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
-        "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
-    ];
+    // Set Thai locale for dayjs
+    dayjs.locale('th');
 
-    const inputDate = new Date(date * 1000); // Convert epoch to milliseconds
-    const day = inputDate.getDate();
-    const month = inputDate.getMonth();
-    const year = inputDate.getFullYear() + 543; // Convert to Buddhist calendar year
+    const formattedDate = dayjs.unix(date).format('D MMM BBBB');
 
-    return `${day} ${monthsThai[month]} ${year}`;
+    return formattedDate;
 }
 }
 
