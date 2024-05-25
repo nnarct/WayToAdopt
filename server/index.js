@@ -27,6 +27,8 @@ app.get("/posts", PostController.retrieveAllPost);
 // app.use("/api", userRoutes);
 // app.post("/register", Validator.createUser, AuthController.createUser);
 app.post("/register",  AuthController.createUser);
+app.post("/login",  AuthController.loginUser);
+app.post("/myposts",  PostController.retrievePostsByUser);
 
 // Start the server
 app.listen(port, () => {
