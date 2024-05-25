@@ -1,6 +1,6 @@
 const { auth, db } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
-const { AuthenticationService } = require("./AuthenticationService");
+const  AuthenticationService  = require("./AuthenticationService");
 
 class PostService {
 
@@ -51,8 +51,8 @@ class PostService {
 
   static async retrievePostsByUser(token) {
     // get token to uid
-    const userData = await AuthenticationService.verifyToken(token);
-    return await PostModel.getUserPosts(userData.uid);
+    const uid = await AuthenticationService.getUidByToken(token);
+    return await PostModel.getUserPosts(uid);
   }
 }
 module.exports = PostService;

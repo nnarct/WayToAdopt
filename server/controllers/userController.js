@@ -10,6 +10,14 @@ class UserController {
     }
   }
 
+  static async getUserByToken(req, res) {
+    try {
+      const user = await UserService.getUserByToken(req.body.token);
+      res.status(201).json(user);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
   // Implement other controller methods (getUserById, updateUser, deleteUser) similarly
 }
 

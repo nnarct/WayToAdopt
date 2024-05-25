@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 
 const PostController = require("./controllers/postController");
 const AuthController = require("./controllers/authController");
+const UserController = require("./controllers/userController");
 
 const app = express();
 app.use(express.json());
@@ -28,6 +29,7 @@ app.get("/posts", PostController.retrieveAllPost);
 app.post("/register",  AuthController.createUser);
 // app.post("/login",  AuthController.loginUser);
 app.post("/myposts",  PostController.retrievePostsByUser);
+app.post("/profile",  UserController.getUserByToken);
 
 // Start the server
 app.listen(port, () => {

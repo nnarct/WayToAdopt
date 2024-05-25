@@ -13,6 +13,10 @@ class AuthenticationService {
       else throw new Error(error.message);
     }
   }
+  static async getUidByToken(token) {
+    const dat = await auth.verifyIdToken(token);
+    return dat.uid;
+  }
 }
 
-module.exports = { AuthenticationService };
+module.exports = AuthenticationService;

@@ -1,13 +1,13 @@
 const { db } = require("../firebaseConfig");
 class UserModel {
-
   static async createUser(userId, userData) {
     const userCollection = db.collection("user");
     return await userCollection.doc(userId).set(userData);
   }
 
-  async getUserById(userId) {
-    const userDoc = await this.userCollection.doc(userId).get();
+  static async getUserById(userId) {
+    const userCollection = db.collection("user");
+    const userDoc = await userCollection.doc(userId).get();
     if (!userDoc.exists) {
       throw new Error("User not found");
     }
