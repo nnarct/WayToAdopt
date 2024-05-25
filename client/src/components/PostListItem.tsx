@@ -1,10 +1,10 @@
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 
-const PostListItem = ({ postID }: { postID: string }) => {
+const PostListItem = ({ post }: { post: any }) => {
   // get postTitle, petPic, petType, petAge to be displayed
 
-  if (!postID) {
+  if (!post) {
     return null;
   }
 
@@ -15,8 +15,8 @@ const PostListItem = ({ postID }: { postID: string }) => {
 
   return (
     <>
-      <Link to={`/myposts/pdetail/${postID}`}>
-        <Button> This is list example {postID}</Button>
+      <Link to={`/myposts/pdetail/${post.id}`}>
+        <Button> This is list example {post.postTitle}</Button>
       </Link>
       {/* Implement PostListItem Here */}
     </>
