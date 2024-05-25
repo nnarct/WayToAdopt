@@ -1,5 +1,5 @@
 const { db } = require("../firebaseConfig");
-const PetType = require("./PetType");
+
 class PostModel {
   static async createPost(postData) {
     try {
