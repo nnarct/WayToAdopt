@@ -10,18 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/antd": "^1.0.0",
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.17.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.0",
-    "tailwind-merge": "^2.3.0"
     "antd-phone-input": "^0.3.7",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "firebase": "^10.12.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-query": "^3.39.3",
+    "react-router-dom": "^6.23.0",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
