@@ -37,8 +37,8 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/petdetails/:postID" element={<PostIDforDetailTest />} />
-            <Route path="/petdetails" element={<PostDetail />} />
+            {/* <Route path="/petdetails/:postID" element={<PostIDforDetailTest />} /> */}
+            {/* <Route path="/petdetails" element={<PostDetail />} /> */}
             <Route element={<Layout />}>
               <Route path="/*" element={<Page404 />} />
               <Route index element={<HomePage />} />

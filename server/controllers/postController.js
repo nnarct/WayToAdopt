@@ -47,6 +47,27 @@ class PostController {
     }
   }
 
+  static async getPostById(req, res) {
+    const id = req.body.postID;
+
+    try {
+      const details = await PostService.getPostById(id);
+      return res.status(201).json(details);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getPostWithQuestionById(req, res) {
+    const id = req.body.postID;
+    try {
+      const details = await PostService.getPostWithQuestion(id);
+      return res.status(201).json(details);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   static async deletePost(req, res) {}
 }
 

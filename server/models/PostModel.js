@@ -66,6 +66,52 @@ class PostModel {
     return posts;
   }
 
+  static async getPostById(id) {
+    const postRef = db.collection("post").doc(id);
+
+    const doc = await postRef.get();
+    if (doc.exists) {
+      const postData = doc.data();
+      const petTypeData = postData.petType
+        ? await postData.petType.get()
+        : null;
+      return {
+        id: doc.id,
+        ...postData,
+        petType: petTypeData ? petTypeData.data().name : null,
+      };
+    }
+    return null;
+  }
+
+  static async getPostRefById(id) {
+    const postRef = db.collection("post").doc(id);
+    const postDoc = await postRef.get();
+    if (!postDoc.exists) {
+      throw new Error(`No post found with ID: ${id}`);
+    }
+
+    return postDoc;
+  }
+
+  static async getPostQuestionsByPostId(id) {
+    const postDoc = await this.getPostRefById(id);
+    const questionsRef = postDoc.ref.collection("question");
+    const questionsSnapshot = await questionsRef.get();
+
+    if (questionsSnapshot.empty) {
+      console.log("No questions found for this post.");
+      return [];
+    }
+
+    const questions = [];
+    questionsSnapshot.forEach((doc) => {
+      questions.push({ id: doc.id, ...doc.data() });
+    });
+
+    return questions;
+  }
+
   // Implement other model methods (getPostById, updatePost, deletePost) similarly
 }
 

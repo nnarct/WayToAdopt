@@ -1,10 +1,8 @@
 const { auth, db } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
-const  AuthenticationService  = require("./AuthenticationService");
+const AuthenticationService = require("./AuthenticationService");
 
 class PostService {
-
-
   async createPostWithQuestions(postData, questionsData) {
     try {
       const postId = await this.postModel.createPost(postData);
@@ -53,6 +51,25 @@ class PostService {
     // get token to uid
     const uid = await AuthenticationService.getUidByToken(token);
     return await PostModel.getUserPosts(uid);
+  }
+
+  static async getPostById(id) {
+    try {
+      const post = await PostModel.getPostById(id);
+      if (!post) {
+        throw new Error("No post found");
+      }
+      return post;
+    } catch (error) {
+      console.error("Error getting document:", error);
+      throw error;
+    }
+  }
+
+  static async getPostWithQuestion(id) {
+    const post = await this.getPostById(id);
+    const question = await PostModel.getPostQuestionsByPostId(id);
+    return { post, question };
   }
 }
 module.exports = PostService;

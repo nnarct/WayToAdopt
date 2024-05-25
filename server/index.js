@@ -30,6 +30,7 @@ app.post("/register",  AuthController.createUser);
 // app.post("/login",  AuthController.loginUser);
 app.post("/myposts",  PostController.retrievePostsByUser);
 app.post("/profile",  UserController.getUserByToken);
+app.post("/postDetails",  PostController.getPostById);
 
 // Start the server
 app.listen(port, () => {
