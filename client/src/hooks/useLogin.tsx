@@ -1,75 +1,63 @@
-import axios from "axios";
-import { LoginCredentialsType } from "@/assets/types";
-import { useAuth } from "@/contexts/AuthContext";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { notification } from "antd";
-import { loginUrl } from "@/assets/api";
-import { UseMutateFunction, useMutation, useQueryClient } from "react-query";
-
-interface User {
-  name: string;
-}
-
+import { LoginCredentialsType } from "@/assets/types";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/services/firebaseConfig";
+import { useAuth } from "@/contexts/AuthContext";
 // Function to handle login API call
-async function login(
-  email: string,
-  password: string
-): Promise<{ token: string; expires: string }> {
+const login = async (data: LoginCredentialsType) => {
   try {
-    const response = await axios.post(loginUrl, { email, password });
-
-    // return response.json();
-    return response.data;
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      data.email,
+      data.password
+    );
+    const user = userCredential.user;
+    // console.log("User signed in:", user);
+    return { data: { message: "Login usccessfully" }, status: 201, user };
   } catch (error) {
-    if (error.response.status === 401) {
-      throw new Error("Incorrect email or password.");
+    const errorCode = error.code;
+    // console.log({ error });
+    if (errorCode && errorCode === "auth/invalid-credential") {
+      return { data: { message: "Incorrect email or password" }, status: 200 };
     }
-    throw new Error("Login failed.");
+    if (errorCode && errorCode === "auth/too-many-requests") {
+      return {
+        data: { message: "Too many request, tru again later" },
+        status: 200,
+      };
+    }
+    return { data: { message: "Something went wrong" }, status: 500 };
   }
-}
-
-type IUseSignIn = {
-  login: UseMutateFunction<
-    LoginCredentialsType,
-    { message: string },
-    LoginCredentialsType
-  >;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
 };
 
-export function useLogin(): IUseSignIn {
-  const queryClient = useQueryClient();
+const useLogin = () => {
+  const navigator = useNavigate();
   const { setAuth } = useAuth();
-
-  const {
-    mutate: loginMutation,
-    isLoading,
-    isError,
-    error,
-  } = useMutation<
-    LoginCredentialsType,
-    { message: string },
-    { email: string; password: string }
-  >(({ email, password }) => login(email, password), {
-    onSuccess: (data) => {
-      // Save the user in the state
-      setAuth(data.token, data.expires);
-      // Invalidate and refetch queries that could be affected by the login
-      queryClient.invalidateQueries("user");
+  return useMutation(login, {
+    onSuccess: (res) => {
+      if (res.status === 200)
+        return notification.error({ message: res.data.message });
+      if (res.status === 500)
+        return notification.error({ message: res.data.message });
+      if (!(res.status === 201 && res.user)) {
+        return;
+      }
+      const u = res.user;
+      setAuth(
+        u.uid,
+        u.stsTokenManager.refreshToken,
+        u.stsTokenManager.accessToken,
+        u.stsTokenManager.expirationTime
+      );
+      notification.success({ message: "Login successfully !" });
+      navigator("/");
     },
     onError: (error) => {
-      notification.error({
-        message: error.message,
-        placement: "bottom",
-      });
+      // console.log("onError");
+      notification.error({ message: `Login failed: ${error}` });
     },
   });
-
-  return {
-    login: loginMutation,
-    isLoading,
-    isError,
-    error,
-  };
-}
+};
+export default useLogin;

@@ -12,20 +12,15 @@ import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginCredentialsType } from "@/assets/types";
 import logo from "@/assets/images/logo_white.svg";
-import ErrorAlert from "@/components/shared/ErrorAlert";
 
 const LoginForm = ({
   onFinish,
   form,
   loading,
-  isError,
-  error
 }: {
   onFinish: (values: LoginCredentialsType) => void;
   form: FormInstance;
-  isError: boolean;
   loading: boolean;
-  error: string;
 }) => {
   const navigate = useNavigate();
   return (
@@ -90,7 +85,6 @@ const LoginForm = ({
                 เข้าสู่ระบบ
               </Button>
             </Form.Item>
-            {isError && <ErrorAlert text={error} />}
           </Form>
           <Flex align="center" justify="center">
             <Typography.Text
