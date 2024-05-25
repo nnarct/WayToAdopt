@@ -5,6 +5,7 @@ import { LoginCredentialsType } from "@/assets/types";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/services/firebaseConfig";
 import { useAuth } from "@/contexts/AuthContext";
+import dayjs from "dayjs";
 // Function to handle login API call
 const login = async (data: LoginCredentialsType) => {
   try {
@@ -14,17 +15,23 @@ const login = async (data: LoginCredentialsType) => {
       data.password
     );
     const user = userCredential.user;
-    // console.log("User signed in:", user);
-    return { data: { message: "Login usccessfully" }, status: 201, user };
+    const idTokenResult = await user.getIdTokenResult(); // Get the ID token result
+    const token = idTokenResult.token;
+    const expirationTime = dayjs(idTokenResult.expirationTime).valueOf();
+    return {
+      data: { message: "Login usccessfully" },
+      status: 201,
+      token,
+      expirationTime,
+    };
   } catch (error) {
     const errorCode = error.code;
-    // console.log({ error });
     if (errorCode && errorCode === "auth/invalid-credential") {
       return { data: { message: "Incorrect email or password" }, status: 200 };
     }
     if (errorCode && errorCode === "auth/too-many-requests") {
       return {
-        data: { message: "Too many request, tru again later" },
+        data: { message: "Too many request, try again later" },
         status: 200,
       };
     }
@@ -41,21 +48,14 @@ const useLogin = () => {
         return notification.error({ message: res.data.message });
       if (res.status === 500)
         return notification.error({ message: res.data.message });
-      if (!(res.status === 201 && res.user)) {
+      if (!(res.status === 201 && res.token)) {
         return;
       }
-      const u = res.user;
-      setAuth(
-        u.uid,
-        u.stsTokenManager.refreshToken,
-        u.stsTokenManager.accessToken,
-        u.stsTokenManager.expirationTime
-      );
+      setAuth(res.token, res.expirationTime.toString());
       notification.success({ message: "Login successfully !" });
       navigator("/");
     },
     onError: (error) => {
-      // console.log("onError");
       notification.error({ message: `Login failed: ${error}` });
     },
   });
