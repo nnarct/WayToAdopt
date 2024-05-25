@@ -125,41 +125,43 @@ const PostDetail = () => {
   };
 
   return (
-<Row gutter={16}>
-  <Col span={6}>
-    <Image src={post.petPic} />
-  </Col>
-  <Col span={18}>
-    <Card>
-      <div style={{ marginBottom: '16px' }}>
-        <Typography.Title level={5} style={{ marginBottom: '8px' }}>หัวข้อประกาศ</Typography.Title>
-        <Typography.Text style={{ marginBottom: '16px' }}>{post.postTitle}</Typography.Text>
-      </div>
-      <Row>
-        <Col span={12}>
-          <Space direction="vertical" style={{ width: '100%' }}>
-            <DescriptionCard title="ประเภทสัตว์เลี้ยง">{post.petType}</DescriptionCard>
-            <DescriptionCard title="วันเกิด">{post.petDOB}</DescriptionCard>
-            <DescriptionCard title="การรับการรักษา">{renderVaccinated(post.petVaccinated)}</DescriptionCard>
-            <DescriptionCard title="การหย่านม">{renderWean(post.petWean)}</DescriptionCard>
-          </Space>
-        </Col>
-        <Col span={12}>
-          <Space direction="vertical" style={{ width: '100%' }}>
-            <DescriptionCard title="พันธุ์สัตว์เลี้ยง">{post.petBreed}</DescriptionCard>
-            <DescriptionCard title="เพศของสัตว์">{renderGender(post.petGender)}</DescriptionCard>
-            <DescriptionCard title="การทำหมัน">{renderSterilized(post.petSterilized)}</DescriptionCard>
-            <DescriptionCard title="การฝึกฝนการขับถ่าย">{renderHouseBreaking(post.petHouseBreaking)}</DescriptionCard>
-          </Space>
-        </Col>
-      </Row>
-      <div style={{ marginTop: '16px' }}>
-        <Typography.Title level={5} style={{ marginBottom: '8px' }}>รายละเอียดอื่นๆ</Typography.Title>
-        <Typography.Text style={{ marginBottom: '16px' }}>{post.petDetail}</Typography.Text>
-      </div>
-    </Card>
-  </Col>
-</Row>
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+  <Row gutter={16} style={{ width: '80%' }}>
+    <Col span={6}>
+      <Image src={post.petPic} style={{ borderRadius: '8px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}  />
+    </Col>
+    <Col span={18}>
+      <Card>
+        <div style={{ marginBottom: '16px', marginLeft: '8px' }}>
+          <Typography.Title level={5} style={{ marginBottom: '8px', fontSize: '15px', color: '#3C6685' }}>หัวข้อประกาศ</Typography.Title>
+          <Typography.Text style={{ marginBottom: '16px', fontSize: '14px', color: '#95C0DE' }}>{post.postTitle}</Typography.Text>
+        </div>
+        <Row>
+          <Col span={12}>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <DescriptionCard title="ประเภทสัตว์เลี้ยง">{post.petType}</DescriptionCard>
+              <DescriptionCard title="วันเกิด">{post.petDOB}</DescriptionCard>
+              <DescriptionCard title="การรับการรักษา">{renderVaccinated(post.petVaccinated)}</DescriptionCard>
+              <DescriptionCard title="การหย่านม">{renderWean(post.petWean)}</DescriptionCard>
+            </Space>
+          </Col>
+          <Col span={12}>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <DescriptionCard title="พันธุ์สัตว์เลี้ยง">{post.petBreed}</DescriptionCard>
+              <DescriptionCard title="เพศของสัตว์">{renderGender(post.petGender)}</DescriptionCard>
+              <DescriptionCard title="การทำหมัน">{renderSterilized(post.petSterilized)}</DescriptionCard>
+              <DescriptionCard title="การฝึกฝนการขับถ่าย">{renderHouseBreaking(post.petHouseBreaking)}</DescriptionCard>
+            </Space>
+          </Col>
+        </Row>
+        <div style={{ marginTop: '16px', marginLeft: '8px' }}>
+          <Typography.Title level={5} style={{ marginBottom: '8px', fontSize: '14px', color: '#3C6685' }}>รายละเอียดอื่นๆ</Typography.Title>
+          <Typography.Text style={{ marginBottom: '16px', fontSize: '14px', color: '#95C0DE' }}>{post.petDetail}</Typography.Text>
+        </div>
+      </Card>
+    </Col>
+  </Row>
+</div>
 
 
   );

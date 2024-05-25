@@ -18,8 +18,8 @@ const DescriptionCard = ({
 }: DescriptionCardProps) => {
   return (
     <Space direction="vertical" style={{ padding: '4px 8px' }}>
-      <div style={{ fontWeight: 'bold', color: 'black' }}>{title}</div>
-      <div style={{ color: 'black' }}>{children}</div>
+      <div style={{ fontWeight: 'bold', color: '#3C6685' }}>{title}</div>
+      <div style={{ color: '#95C0DE' }}>{children}</div>
     </Space>
   );
 };
