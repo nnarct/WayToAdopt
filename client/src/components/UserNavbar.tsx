@@ -5,12 +5,12 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import useAuth from "@/hooks/useAuth";
 import Navbar from "./shared/Navbar";
+import { useAuth } from "@/contexts/AuthContext";
 
 const UserNavbar = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { clearAuth } = useAuth()
 
   const items = [
     {
@@ -20,7 +20,7 @@ const UserNavbar = () => {
     },
     {
       key: "2",
-      label: <span onClick={logout}>Log out</span>,
+      label: <span onClick={clearAuth}>Log out</span>,
       icon: <LogoutOutlined />,
     },
   ];

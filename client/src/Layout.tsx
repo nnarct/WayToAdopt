@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
-import useAuth from "@/hooks/useAuth";
+
 import UserNavbar from "@/components/UserNavbar";
 import AnonymousNavbar from "@/components/AnonymousNavbar";
+import { useEffect } from "react";
+import { useAuth } from "./contexts/AuthContext";
 
 const Layout = () => {
-  const { isAuthenticated } = useAuth();
-  
+  const { token } = useAuth();
+
   return (
     <>
-      {isAuthenticated ? <UserNavbar /> : <AnonymousNavbar />}
+      {token ? <UserNavbar /> : <AnonymousNavbar />}
       <main className="container px-4 mx-auto">
         <Outlet />
       </main>

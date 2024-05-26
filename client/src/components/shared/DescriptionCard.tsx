@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex } from "antd";
-import { Property  } from "csstype";
+import { Property } from "csstype";
 
 const DescriptionCard = ({
   title,

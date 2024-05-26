@@ -6,7 +6,6 @@ import {
   Outlet,
 } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import AuthService from "@/services/AuthService";
 import Layout from "./Layout";
 import LoginPage from "@/pages/LoginPage";
 import HomePage from "@/pages/HomePage";
@@ -18,9 +17,11 @@ import MyPosts from "@/pages/MyPosts";
 // import AdoptionSubmission from "@/pages/AdoptionSubmission";
 import Post from "@/pages/Post";
 import PostAnswersPage from "@/pages/PostAnswersPage";
-
+import PostIDforDetailTest from "./components/shared/PostIDforDetailTest";
+import PostDetail from "./components/PostDetail";
 import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
+import { useAuth } from "@/contexts/AuthContext";
 
 import Test from "@/pages/test";
 import Test2 from "@/pages/test2";
@@ -42,6 +43,9 @@ const App = () => {
             <Route path="/test" element={<Test />} />
             <Route path="/test2" element={<Test2 />} />
             <Route path="/test3" element={<PostAnswersPage />} />
+
+            {/* <Route path="/petdetails/:postID" element={<PostIDforDetailTest />} /> */}
+            {/* <Route path="/petdetails" element={<PostDetail />} /> */}
             <Route element={<Layout />}>
               <Route path="/*" element={<Page404 />} />
               <Route index element={<HomePage />} />
@@ -69,8 +73,9 @@ const App = () => {
 
 // Guard routes for authenticated users
 const PrivateRoute = () => {
-  const isAuthenticated = AuthService.isAuthenticated();
-  return isAuthenticated ? (
+  const { token } = useAuth();
+
+  return token ? (
     <ContentCard>
       <Outlet />
     </ContentCard>

@@ -1,5 +1,5 @@
 export const PATH_NAMES: { [key: string]: string } = {
-  profile: "ข้อมูลส่วนตัว",
+  profile: "ข้อมูลผู้ใช้งาน",
   myposts: "ประกาศของฉัน",
   editpf: "แก้ไขข้อมูลส่วนตัว",
   pdetail: "รายละเอียดโพสต์",

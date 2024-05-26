@@ -23,6 +23,7 @@
       "@/components/*": ["components/*"],
       "@/shared/*": ["components/shared/*"],
       "@/assets/*": ["assets/*"],
+      "@/contexts/*": ["contexts/*"],
     },
 
     /* Linting */
