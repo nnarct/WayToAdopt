@@ -1,5 +1,5 @@
 import useGetMyPosts from "@/hooks/post/useGetMyPosts";
-import PostListItem from "@/components/PostListItem";
+import PostsList from "@/components/PostsList";
 import {
   Loading,
   NoPost,
@@ -9,20 +9,17 @@ import {
 const MyPosts = () => {
   const { data: posts, isLoading, isError } = useGetMyPosts();
 
-  if (isLoading) return <Loading />;
-  if (isError) return <SomethingWentWrong />;
-  if (posts.length === 0) return <NoPost />;
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <SomethingWentWrong />;
+  }
+  if (posts.length === 0) {
+    return <NoPost />;
+  }
 
-  return (
-    <>
-      {/* guide */}
-      Implement My Posts Here<br></br>
-      {/* guide ends */}
-      {posts.map((post: { id: string }) => (
-        <PostListItem key={`postItem${post.id}`} post={post} />
-      ))}
-    </>
-  );
+  return <PostsList posts={posts} />;
 };
 
 export default MyPosts;

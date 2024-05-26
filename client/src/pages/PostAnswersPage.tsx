@@ -1,5 +1,5 @@
 // /pages/PostAnswersPage.tsx
-import PostListItem from "@/components/PostListItem";
+import PostList from "@/components/PostList";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -35,9 +35,9 @@ const PostAnswersPage: React.FC<Props> = (props: Props) => {
     <div className="relative min-h-screen flex flex-col justify-between pb-8">
       <div>
         <h1>Post Answers Page</h1>
-        {postIDs.map((post) => (
+        {/* {postIDs.map((post) => (
           <PostListItem key={post} postID={post} />
-        ))}
+        ))} */}
       </div>
       <div className="flex justify-center mt-4">
         <Link to="/create-ad">

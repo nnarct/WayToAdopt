@@ -64,3 +64,11 @@ export interface AnswerListType {
   lastName: string;
   createdAt: number;
 }
+
+export interface PostListItemType {
+  id: string;
+  postTitle: string;
+  petType: string;
+  petDob: number;
+  petPic: string;
+}
