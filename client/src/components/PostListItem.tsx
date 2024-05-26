@@ -1,24 +1,67 @@
-import { Button } from "antd";
+// /components/PostListItem.tsx
+import React from "react";
+import { Avatar, List, Button } from "antd";
 import { Link } from "react-router-dom";
 
-const PostListItem = ({ post }: { post: any }) => {
-  // get postTitle, petPic, petType, petAge to be displayed
+const data = [
+  {
+    title: "My Announcement Title 1",
+  },
+  {
+    title: "My Announcement Title 2",
+  },
+  {
+    title: "My Announcement Title 3",
+  },
+  {
+    title: "My Announcement Title 4",
+  },
+];
 
-  if (!post) {
+interface PostListItemProps {
+  postID: string;
+}
+
+const PostListItem: React.FC<PostListItemProps> = ({ postID }) => {
+  if (!postID) {
+
     return null;
   }
 
-  // Todo : one list should have 2 actions:
-  // 1. see post url : /myposts/pdetail/:postID
-  // 2. see post answer (submission from other users) url: /myposts/pdetail/answerslist/:postID
-  // 3. delete post // link to nothing [ just ui button , not functional]
-
   return (
     <>
-      <Link to={`/myposts/pdetail/${post.id}`}>
-        <Button> This is list example {post.postTitle}</Button>
-      </Link>
-      {/* Implement PostListItem Here */}
+      <List
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item
+            actions={[
+              <Link
+                key="view-announcement-result"
+                to={`/myposts/pdetail/answerslist/${postID}`}
+              >
+                View announcement result
+              </Link>,
+              <Button key="end-announcement" type="link">
+                End of announcement
+              </Button>,
+              <Button key="delete-announcement" type="link">
+                Delete announcement
+              </Button>,
+            ]}
+          >
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                />
+              }
+              title={<a href="https://ant.design">{item.title}</a>}
+              description="Announcement Description"
+            />
+          </List.Item>
+        )}
+      />
     </>
   );
 };

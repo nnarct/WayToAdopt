@@ -23,6 +23,9 @@ import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
 import { useAuth } from "@/contexts/AuthContext";
 
+import Test from "@/pages/test";
+import Test2 from "@/pages/test2";
+
 const App = () => {
   return (
     <>
@@ -37,6 +40,10 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/test2" element={<Test2 />} />
+            <Route path="/test3" element={<PostAnswersPage />} />
+
             {/* <Route path="/petdetails/:postID" element={<PostIDforDetailTest />} /> */}
             {/* <Route path="/petdetails" element={<PostDetail />} /> */}
             <Route element={<Layout />}>
