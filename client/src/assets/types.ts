@@ -72,3 +72,24 @@ export interface PostListItemType {
   petDob: number;
   petPic: string;
 }
+export interface QuestionType {
+  id: string;
+  question: string;
+}
+export interface AnswersType {
+  questionId: string;
+  answer: string;
+}
+// export interface Post {
+//   postTitle: string;
+//   petPic: string;
+//   petGender: string;
+//   petDetail: string;
+//   petDOB: string;
+//   petType: string;
+//   petBreed: string;
+//   petHouseBreaking: string;
+//   petSterilized: string;
+//   petVaccinated: string;
+//   petWean: string;
+// }

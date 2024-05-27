@@ -5,4 +5,5 @@ export const PATH_NAMES: { [key: string]: string } = {
   pdetail: "รายละเอียดโพสต์",
   petdetails: "รายละเอียดสัตว์เลี้ยง",
   answerslist: "รายการคำตอบ",
+  submitSuccess: "ทำคำขอสำเร็จ",
 };

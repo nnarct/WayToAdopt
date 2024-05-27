@@ -9,6 +9,7 @@ const DescriptionCard = ({
   flexProps,
   justify,
   align,
+  className,
 }: {
   title: string;
   children?: React.ReactNode;
@@ -16,10 +17,17 @@ const DescriptionCard = ({
   flexProps?: React.HTMLAttributes<HTMLElement>;
   justify?: Property.JustifyContent;
   align?: Property.AlignItems;
+  className?: string;
 }) => {
   return (
     <>
-      <Flex vertical={vertical} {...flexProps} justify={justify} align={align}>
+      <Flex
+        vertical={vertical}
+        {...flexProps}
+        className={className}
+        justify={justify}
+        align={align}
+      >
         <div className="text-primary font-black">{title}</div>
         <div className="text-secondary">{children}</div>
       </Flex>

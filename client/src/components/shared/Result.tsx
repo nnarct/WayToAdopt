@@ -14,7 +14,7 @@ export const SomethingWentWrong = () => {
 
 export const Loading = () => {
   return (
-    <Flex align="center" justify="center" className="mt-[25vh]">
+    <Flex align="center" justify="center" className="mt-[25vh] mb-[25vh]">
       <Spin size="large" />
     </Flex>
   );

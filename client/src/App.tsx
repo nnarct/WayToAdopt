@@ -19,6 +19,7 @@ import Post from "@/pages/Post";
 import PostAnswersPage from "@/pages/PostAnswersPage";
 import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
+import SubmitSuccess from "@/pages/SubmitSuccess";
 import { useAuth } from "@/contexts/AuthContext";
 
 const App = () => {
@@ -54,6 +55,10 @@ const App = () => {
                 <Route
                   path="/petdetails/:postID"
                   element={<PetDetailsPage />}
+                />
+                <Route
+                  path="/submitSuccess"
+                  element={<SubmitSuccess />}
                 />
               </Route>
             </Route>

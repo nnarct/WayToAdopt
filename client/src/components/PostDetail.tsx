@@ -1,9 +1,8 @@
-import { Image, Typography } from "antd";
-import { Row, Col, Card, Space } from "antd";
-import DescriptionCard from "./shared/DescriptionCard";
+import { Flex, Image, Card } from "antd";
 import useGetPostDetail from "@/hooks/post/useGetPostDetail";
-import { Loading, SomethingWentWrong } from "./shared/Result";
-import { useEffect } from "react";
+import UtilsService from "@/services/UtilsService";
+import DescriptionCard from "@/components/shared/DescriptionCard";
+import { Loading, SomethingWentWrong } from "@/components/shared/Result";
 
 // interface Post {
 //   postTitle: string;
@@ -24,19 +23,6 @@ const PostDetail = ({ postID }: { postID: string }) => {
 
   if (isLoading) return <Loading />;
   if (isError) return <SomethingWentWrong />;
-  // let post: Post = {
-  //   postTitle: "",
-  //   petPic: "",
-  //   petGender: "",
-  //   petDetail: "",
-  //   petType: "",
-  //   petBreed: "",
-  //   petDOB: "",
-  //   petHouseBreaking: "",
-  //   petSterilized: "",
-  //   petVaccinated: "",
-  //   petWean: "",
-  // };
 
   // post = {
   //   postTitle: "หาบ้านให้น้องค่ะ ",
@@ -59,10 +45,8 @@ const PostDetail = ({ postID }: { postID: string }) => {
         return "ได้รับการฉีดวัคซีนแล้ว";
       case "N":
         return "ยังไม่ได้รับการฉีดวัคซีนแล้ว";
-      case "NS":
-        return "ไม่ระบุ";
       default:
-        return "";
+        return "ไม่ระบุ";
     }
   };
 
@@ -72,21 +56,21 @@ const PostDetail = ({ postID }: { postID: string }) => {
         return "หย่านมแล้ว";
       case "N":
         return "ยังไม่หย่านม";
-      case "NS":
-        return "ไม่ระบุ";
       default:
-        return "";
+        return "ไม่ระบุ";
     }
   };
 
-  const renderGender = (gender: string) => {
+  const renderGender = (gender: 0 | 1 | 2) => {
     switch (gender) {
-      case "M":
+      case 0:
         return "เพศชาย";
-      case "F":
+      case 1:
         return "เพศหญิง";
+      case 2:
+        return "อื่นๆ";
       default:
-        return "";
+        return "-";
     }
   };
 
@@ -96,10 +80,8 @@ const PostDetail = ({ postID }: { postID: string }) => {
         return "ทำหมันแล้ว";
       case "N":
         return "ยังไม่ทำหมัน";
-      case "NS":
-        return "ไม่ระบุ";
       default:
-        return "";
+        return "ไม่ระบุ";
     }
   };
 
@@ -109,73 +91,74 @@ const PostDetail = ({ postID }: { postID: string }) => {
         return "ฝึกขับถ่ายแล้ว";
       case "N":
         return "ยังไม่ฝึกขับถ่าย";
-      case "NS":
-        return "ไม่ระบุ";
       default:
-        return "";
+        return "ไม่ระบุ";
     }
+  };
+  const Details = () => {
+    return (
+      <div className="grid sm:grid-cols-2 gap-x-2 gap-y-4">
+        <DescriptionCard
+          className="sm:col-span-2"
+          vertical
+          title="หัวข้อประกาศ"
+        >
+          {post.postTitle}
+        </DescriptionCard>
+        <DescriptionCard vertical title="ประเภทสัตว์เลี้ยง">
+          {post.petType}
+        </DescriptionCard>
+        <DescriptionCard vertical title="พันธุ์สัตว์เลี้ยง">
+          {post.petBreed}
+        </DescriptionCard>
+        <DescriptionCard vertical title="วันเกิด">
+          {UtilsService.formatDate(post.petDob)}
+          {"  "}({UtilsService.formatAge(post.petDob)})
+        </DescriptionCard>
+        <DescriptionCard vertical title="เพศของสัตว์">
+          {renderGender(post.petGender)}
+        </DescriptionCard>
+        <DescriptionCard vertical title="การรับการรักษา">
+          {renderVaccinated(post.petVaccinated)}
+        </DescriptionCard>
+        <DescriptionCard vertical title="การทำหมัน">
+          {renderSterilized(post.petSterilized)}
+        </DescriptionCard>
+        <DescriptionCard vertical title="การหย่านม">
+          {renderWean(post.petWean)}
+        </DescriptionCard>
+        <DescriptionCard vertical title="การฝึกฝนการขับถ่าย">
+          {renderHouseBreaking(post.petHouseBreaking)}
+        </DescriptionCard>
+        <DescriptionCard
+          className="sm:col-span-2"
+          vertical
+          title="รายละเอียดอื่นๆ"
+        >
+          {post.petDetail}
+        </DescriptionCard>
+      </div>
+    );
   };
 
   return (
-    <Row gutter={16}>
-      <Col span={6}>
-        <Image src={post.petPic} />
-      </Col>
-      <Col span={18}>
-        <Card>
-          <div style={{ marginBottom: "16px" }}>
-            <Typography.Title level={5} style={{ marginBottom: "8px" }}>
-              <span className="text-primary">หัวข้อประกาศ</span>
-            </Typography.Title>
-            <Typography.Text style={{ marginBottom: "16px" }}>
-              <span className="text-secondary">{post.postTitle}</span>
-            </Typography.Text>
-          </div>
-          <Row>
-            <Col span={12}>
-              <Space direction="vertical" style={{ width: "100%" }}>
-                <DescriptionCard vertical title="ประเภทสัตว์เลี้ยง">
-                  {post.petType}
-                </DescriptionCard>
-                <DescriptionCard vertical title="วันเกิด">
-                  {post.petDOB}
-                </DescriptionCard>
-                <DescriptionCard vertical title="การรับการรักษา">
-                  {renderVaccinated(post.petVaccinated)}
-                </DescriptionCard>
-                <DescriptionCard vertical title="การหย่านม">
-                  {renderWean(post.petWean)}
-                </DescriptionCard>
-              </Space>
-            </Col>
-            <Col span={12}>
-              <Space direction="vertical" style={{ width: "100%" }}>
-                <DescriptionCard vertical title="พันธุ์สัตว์เลี้ยง">
-                  {post.petBreed}
-                </DescriptionCard>
-                <DescriptionCard vertical title="เพศของสัตว์">
-                  {renderGender(post.petGender)}
-                </DescriptionCard>
-                <DescriptionCard vertical title="การทำหมัน">
-                  {renderSterilized(post.petSterilized)}
-                </DescriptionCard>
-                <DescriptionCard vertical title="การฝึกฝนการขับถ่าย">
-                  {renderHouseBreaking(post.petHouseBreaking)}
-                </DescriptionCard>
-              </Space>
-            </Col>
-          </Row>
-          <div style={{ marginTop: "16px" }}>
-            <Typography.Title level={5} style={{ marginBottom: "8px" }}>
-              <span className="text-primary">รายละเอียดอื่นๆ</span>
-            </Typography.Title>
-            <Typography.Text style={{ marginBottom: "16px" }}>
-              <span className="text-secondary">{post.petDetail}</span>
-            </Typography.Text>
-          </div>
-        </Card>
-      </Col>
-    </Row>
+    <div className="sm:grid sm:grid-cols-3 gap-4">
+      <Flex vertical className="mb-4 sm:mb-0">
+        <Image
+          src={post.petPic}
+          style={{
+            borderRadius: 20,
+            border: "1px solid #fff",
+            maxHeight: 400,
+            height: "fit",
+            objectFit: "cover",
+          }}
+        />
+      </Flex>
+      <Card className="col-span-2">
+        <Details />
+      </Card>
+    </div>
   );
 };
 
