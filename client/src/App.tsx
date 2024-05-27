@@ -30,6 +30,7 @@ const App = () => {
         theme={{
           token: {
             colorPrimary: "#3C6685",
+            colorText: "#3C6685",
           },
         }}
       >
