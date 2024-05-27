@@ -22,6 +22,7 @@ import Page404 from "@/components/shared/Page404";
 import SubmitSuccess from "@/pages/SubmitSuccess";
 import { useAuth } from "@/contexts/AuthContext";
 import SubmitterInfo from "./pages/SubmitterInfo";
+import CreatePostPage from "./pages/CreatePostPage";
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/profile/editpf" element={<ProfilePage />} />
                 <Route path="/myposts" element={<MyPosts />} />
+                <Route path="/myposts/create" element={<CreatePostPage />} />
                 <Route path="/myposts/pdetail/:postID" element={<Post />} />
                 <Route
                   path="/myposts/pdetail/:postID/answerslist"

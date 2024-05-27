@@ -6,4 +6,5 @@ export const PATH_NAMES: { [key: string]: string } = {
   petdetails: "รายละเอียดสัตว์เลี้ยง",
   answerslist: "รายการคำตอบ",
   submitSuccess: "ทำคำขอสำเร็จ",
+  create: "สร้างโพสต์",
 };
