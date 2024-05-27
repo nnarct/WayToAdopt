@@ -21,4 +21,8 @@ admin.initializeApp({
 
 const db = getFirestore();
 const auth = admin.auth();
+if (!auth)
+  console.log("not found firebase auth")
+else
+  console.log("firebase auth exist")
 module.exports = { db, auth };
