@@ -9,9 +9,9 @@ import {
 } from "@ant-design/icons";
 
 const PostListItemAction = ({ id }: { id: string }) => {
-
   const navigate = useNavigate();
   const items: MenuProps["items"] = [
+    { label: "ดูรายละเอียด", key: "0", icon: <TeamOutlined /> },
     { label: "ดูการตอบกลับ", key: "1", icon: <TeamOutlined /> },
     { label: "ปิดการประกาศ", key: "2", icon: <CloseOutlined /> },
     { label: "ลบ", key: "3", icon: <DeleteOutlined />, danger: true },
@@ -23,9 +23,13 @@ const PostListItemAction = ({ id }: { id: string }) => {
         <Button icon={<MoreOutlined />} />
       </Dropdown>
       <Flex align="center" className="hidden sm:flex">
+        <Button onClick={() => navigate(`/myposts/pdetail/${id}`)}>
+          ดูรายละเอียด
+        </Button>
+        <Divider type="vertical" />
         <Button
           type="primary"
-          onClick={() => navigate(`/myposts/pdetail/answerslist/${id}`)}
+          onClick={() => navigate(`/myposts/pdetail/${id}/answerslist`)}
         >
           ดูการตอบกลับ
         </Button>

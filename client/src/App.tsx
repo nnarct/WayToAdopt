@@ -21,6 +21,7 @@ import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
 import SubmitSuccess from "@/pages/SubmitSuccess";
 import { useAuth } from "@/contexts/AuthContext";
+import SubmitterInfo from "./pages/SubmitterInfo";
 
 const App = () => {
   return (
@@ -49,8 +50,12 @@ const App = () => {
                 <Route path="/myposts" element={<MyPosts />} />
                 <Route path="/myposts/pdetail/:postID" element={<Post />} />
                 <Route
-                  path="/myposts/pdetail/answerslist/:postID"
+                  path="/myposts/pdetail/:postID/answerslist"
                   element={<PostAnswersPage />}
+                />
+                <Route
+                  path="/myposts/pdetail/:postID/answerslist/profile/:userID"
+                  element={<SubmitterInfo />}
                 />
                 <Route
                   path="/petdetails/:postID"
