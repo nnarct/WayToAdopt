@@ -1,5 +1,6 @@
-const { auth, db } = require("../firebaseConfig");
+const { db } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
+const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
 
 class PostService {
@@ -91,8 +92,37 @@ class PostService {
       batch.set(answerRef, answerData);
     }
     await batch.commit();
-    // Commit the batch
-    await batch.commit();
+  }
+  static async getAnswersUserId(postId) {
+    const post = db.collection("post").doc(postId);
+    const questionSnapshot = await post.collection("question").limit(1).get();
+    const question = questionSnapshot.docs[0];
+    const answers = await question.ref.collection("answer").get();
+    const ret = [];
+    for (const a of answers.docs) {
+      ret.push(a.data().userID);
+    }
+    return ret;
+  }
+
+  static async getAnswerOfUser(postId, userId) {
+    try {
+      const post = new PostModel(postId);
+      const answers = await post.getUserAnswer(userId);
+      const user = await UserModel.getUserById(userId);
+      return {
+        user: {
+          userId: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          tel: user.tel,
+        },
+        answers,
+      };
+    } catch (error) {
+      console.log({ error });
+      throw new Error(error);
+    }
   }
 }
 module.exports = PostService;

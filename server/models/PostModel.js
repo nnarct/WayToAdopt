@@ -4,6 +4,7 @@ class PostModel {
   constructor(id) {
     this.post = db.collection("post").doc(id);
   }
+
   static async createPost(postData) {
     try {
       const { postTitle, createdAt, petDob } = postData;
@@ -140,6 +141,34 @@ class PostModel {
       console.error("Error getting questions: ", error);
       throw error;
     }
+  }
+
+  async getUid() {
+    const postSnapshot = await this.post.get();
+    if (postSnapshot.exists) {
+      const postData = postSnapshot.data();
+      return postData.userID;
+    }
+    return null;
+  }
+
+  async getUserAnswer(userID) {
+    // const post = await db.collection("post").doc(postId);
+    const question = await this.post.collection("question").get();
+    let i = 0;
+    const answers = [];
+    for (const q of question.docs) {
+      const ans = await q.ref
+        .collection("answer")
+        .where("userID", "==", userID)
+        .limit(1)
+        .get();
+      answers.push({
+        question: q.data().question,
+        answer: ans.docs[0].data().answer,
+      });
+      i++;
+    } return answers
   }
   // Implement other model methods (getPostById, updatePost, deletePost) similarly
 }

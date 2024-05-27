@@ -33,6 +33,9 @@ app.post("/profile", UserController.getUserByToken);
 app.post("/postDetails", PostController.getPostById);
 app.post("/questions", PostController.getQuestions);
 app.post("/send-answer", PostController.sendAnswer);
+app.post("/send-answer", PostController.sendAnswer);
+app.post("/answer", PostController.getAnswer);
+app.post("/all-answer-user-id", PostController.allAnswerUserIds);
 
 // Start the server
 app.listen(port, () => {

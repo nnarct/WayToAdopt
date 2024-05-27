@@ -87,6 +87,50 @@ class PostController {
     }
   }
 
+  static async allAnswerUserIds(req, res) {
+    const postId = req.body.postId;
+    // const userId = req.body.userId;
+
+    const token = req.body.token;
+    try {
+      const hasAccess = await AuthenticationService.verifyPostOwner(
+        token,
+        postId
+      );
+      if (!hasAccess) {
+        return res
+          .status(401)
+          .json({ message: "You don't have permission for this data." });
+      }
+      const ids = await PostService.getAnswersUserId(postId);
+      return res.status(201).json(ids);
+    } catch (error) {
+      console.log({ error });
+      return res.status(500).json({ message: error.message });
+    }
+  }
+  static async getAnswer(req, res) {
+    const postId = req.body.postId;
+    const userId = req.body.userId;
+    const token = req.body.token;
+    try {
+      const hasAccess = await AuthenticationService.verifyPostOwner(
+        token,
+        postId
+      );
+      if (!hasAccess) {
+        return res
+          .status(401)
+          .json({ message: "You don't have permission for this data." });
+      }
+      const data = await PostService.getAnswerOfUser(postId, userId);
+      return res.status(201).json(data);
+    } catch (error) {
+      console.log({ error });
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   static async deletePost(req, res) {}
 }
 
