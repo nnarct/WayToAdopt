@@ -26,11 +26,13 @@ const port = process.env.PORT || 3001;
 app.get("/posts", PostController.retrieveAllPost);
 // app.use("/api", userRoutes);
 // app.post("/register", Validator.createUser, AuthController.createUser);
-app.post("/register",  AuthController.createUser);
+app.post("/register", AuthController.createUser);
 // app.post("/login",  AuthController.loginUser);
-app.post("/myposts",  PostController.retrievePostsByUser);
-app.post("/profile",  UserController.getUserByToken);
-app.post("/postDetails",  PostController.getPostById);
+app.post("/myposts", PostController.retrievePostsByUser);
+app.post("/profile", UserController.getUserByToken);
+app.post("/postDetails", PostController.getPostById);
+app.post("/questions", PostController.getQuestions);
+app.post("/send-answer", PostController.sendAnswer);
 
 // Start the server
 app.listen(port, () => {

@@ -1,6 +1,7 @@
 // const firebase = require("../firebaseConfig");
 const { db } = require("../firebaseConfig");
 const PostService = require("../services/PostService");
+const AuthenticationService = require("../services/AuthenticationService");
 class PostController {
   constructor(postService) {
     this.postService = postService;
@@ -58,11 +59,29 @@ class PostController {
     }
   }
 
-  static async getPostWithQuestionById(req, res) {
+  static async getQuestions(req, res) {
     const id = req.body.postID;
     try {
-      const details = await PostService.getPostWithQuestion(id);
-      return res.status(201).json(details);
+      const questions = await PostService.getQuestions(id);
+      return res.status(201).json(questions);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+  static async sendAnswer(req, res) {
+    //array of objects
+    // object = {answer: string, userID: string, , questionID}
+    const postId = req.body.postId;
+    const answers = req.body.answers;
+    const token = req.body.token;
+    const userId = await AuthenticationService.getUidByToken(token);
+    try {
+      const questions = await PostService.submitAnswers(
+        userId,
+        postId,
+        answers
+      );
+      return res.status(201).json(questions);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

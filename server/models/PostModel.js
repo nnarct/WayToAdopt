@@ -1,6 +1,9 @@
 const { db } = require("../firebaseConfig");
 
 class PostModel {
+  constructor(id) {
+    this.post = db.collection("post").doc(id);
+  }
   static async createPost(postData) {
     try {
       const { postTitle, createdAt, petDob } = postData;
@@ -94,7 +97,7 @@ class PostModel {
     return postDoc;
   }
 
-  static async getPostQuestionsByPostId(id) {
+  static async getQuestionsByPostID(id) {
     const postDoc = await this.getPostRefById(id);
     const questionsRef = postDoc.ref.collection("question");
     const questionsSnapshot = await questionsRef.get();
@@ -112,6 +115,32 @@ class PostModel {
     return questions;
   }
 
+  static async getPostIdByQuestionId(id) {
+    const postsSnapshot = await db.collection("post").get();
+
+    for (const postDoc of postsSnapshot.docs) {
+      const questionsSnapshot = await postDoc.ref.collection("question").get();
+      for (const questionDoc of questionsSnapshot.docs) {
+        if (questionDoc.id === id) {
+          return postDoc.id;
+        }
+      }
+    }
+    return null;
+  }
+
+  async getQuestions() {
+    try {
+      const questionsSnapshot = await this.post.collection("question").get();
+
+      return questionsSnapshot.docs.map((questionDoc) => {
+        return { id: questionDoc.id, ...questionDoc.data() };
+      });
+    } catch (error) {
+      console.error("Error getting questions: ", error);
+      throw error;
+    }
+  }
   // Implement other model methods (getPostById, updatePost, deletePost) similarly
 }
 

@@ -66,10 +66,33 @@ class PostService {
     }
   }
 
-  static async getPostWithQuestion(id) {
-    const post = await this.getPostById(id);
-    const question = await PostModel.getPostQuestionsByPostId(id);
-    return { post, question };
+  static async getQuestions(id) {
+    const post = new PostModel(id);
+    return await post.getQuestions();
+  }
+
+  static async submitAnswers(userId, postId, answers) {
+    const post = new PostModel(postId);
+    const batch = db.batch();
+    for (const answer of answers) {
+      const questionId = answer.questionId;
+      const answerData = {
+        answer: answer.answer,
+        userID: userId,
+      };
+
+      // Reference to the specific question's answer sub-collection
+      const answerRef = post.post
+        .collection("question")
+        .doc(questionId)
+        .collection("answer")
+        .doc(); // Generate a new document ID
+
+      batch.set(answerRef, answerData);
+    }
+    await batch.commit();
+    // Commit the batch
+    await batch.commit();
   }
 }
 module.exports = PostService;
