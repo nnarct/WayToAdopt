@@ -10,6 +10,7 @@ const DescriptionCard = ({
   justify,
   align,
   className,
+  gap,
 }: {
   title: string;
   children?: React.ReactNode;
@@ -18,6 +19,7 @@ const DescriptionCard = ({
   justify?: Property.JustifyContent;
   align?: Property.AlignItems;
   className?: string;
+  gap?: string | number;
 }) => {
   return (
     <>
@@ -27,6 +29,7 @@ const DescriptionCard = ({
         className={className}
         justify={justify}
         align={align}
+        gap={gap}
       >
         <div className="text-primary font-black">{title}</div>
         <div className="text-secondary">{children}</div>

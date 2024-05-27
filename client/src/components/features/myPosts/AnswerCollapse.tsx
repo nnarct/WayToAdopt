@@ -44,7 +44,7 @@ const AnswerCollapse = ({
         {
           key: userId,
           label: (
-            <Flex gap={6}>
+            <Flex gap={6} align="center">
               <Avatar
                 style={{
                   backgroundColor: UtilsService.getRandomColor(),
@@ -58,6 +58,7 @@ const AnswerCollapse = ({
               </Avatar>
               <span>{data.user.firstName}</span>
               <span>{data.user.lastName}</span>
+              <span className="text-xs text-gray-500">{data.user.tel}</span>
             </Flex>
           ),
           children: (
