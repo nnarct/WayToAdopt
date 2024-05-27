@@ -1,4 +1,4 @@
-const { AuthenticationService } = require("../services/AuthenticationService");
+const AuthenticationService  = require("../services/AuthenticationService");
 const UserService = require("../services/UserService");
 
 class AuthController {
