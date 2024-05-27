@@ -1,5 +1,8 @@
-import { Avatar, Button, Collapse, Flex, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Avatar, Button, Collapse, Flex, Skeleton, Typography } from "antd";
+import { SomethingWentWrong } from "@/components/shared/Result";
+import useGetAnswer from "@/hooks/post/useGetAllAnswer";
+import UtilsService from "@/services/UtilsService";
 
 const AnswerDescription = ({
   index,
@@ -18,56 +21,62 @@ const AnswerDescription = ({
   );
 };
 
-const answers = [
-  { question: "asdasd", answer: "scasetc" },
-  { question: "loredf", answer: "sfdg" },
-  { question: "adsfasdf", answer: "sfdgsfg" },
-  { question: "gfcvb", answer: "sfdgss" },
-  { question: "yuioyp", answer: "dfey " },
-];
-
-const user = { firstName: "Nan", lastName: "int", id: "asd" };
-
-const AnswerCollapse = () => {
+const AnswerCollapse = ({
+  postId,
+  userId,
+}: {
+  postId: string;
+  userId: string;
+}) => {
   const navigate = useNavigate();
+  const { data, isLoading, isError } = useGetAnswer(postId, userId);
+  if (isLoading) {
+    return <Skeleton.Input style={{ height: 50, width: "100%" }} active />;
+  }
+  if (isError) {
+    return <SomethingWentWrong />;
+  }
+
   return (
     <Collapse
       expandIconPosition={"end"}
       items={[
         {
-          key: "1",
+          key: userId,
           label: (
             <Flex gap={6}>
               <Avatar
                 style={{
-                  backgroundColor: "#f56a00",
+                  backgroundColor: UtilsService.getRandomColor(),
                   verticalAlign: "middle",
                   fontSize: 12,
                 }}
                 size={"small"}
               >
-                {user.firstName[0].toUpperCase()}
-                {user.lastName[0].toUpperCase()}
+                {data.user.firstName[0].toUpperCase()}
+                {data.user.lastName[0].toUpperCase()}
               </Avatar>
-              <span>{user.firstName}</span>
-              <span>{user.lastName}</span>
+              <span>{data.user.firstName}</span>
+              <span>{data.user.lastName}</span>
             </Flex>
           ),
           children: (
             <Flex vertical>
-              {answers.map((answer, i) => (
-                <AnswerDescription
-                  key={`${answer}${i}`}
-                  index={i + 1}
-                  question={answer.question}
-                  answer={answer.answer}
-                />
-              ))}
+              {data.answers.map(
+                (answer: { question: string; answer: string }, i: number) => (
+                  <AnswerDescription
+                    key={`${answer}${i}`}
+                    index={i + 1}
+                    question={answer.question}
+                    answer={answer.answer}
+                  />
+                )
+              )}
             </Flex>
           ),
           extra: (
             <Button
-              onClick={() => navigate(`profile/${user.id}`)}
+              onClick={() => navigate(`profile/${userId}`)}
               size="small"
               style={{ fontSize: 12 }}
             >

@@ -48,7 +48,11 @@ class UtilsService {
     const year = inputDate.getFullYear() + 543; // Convert to Buddhist calendar year
 
     return `${day} ${monthsThai[month]} ${year}`;
-}
+  }
+  static getRandomColor(): string {
+    const colors = ["#f56a00","#7265e6","#ffbf00","#00b3c0","#10c231","#da007f","#b300e9",];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
 }
 
 export default UtilsService;

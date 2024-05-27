@@ -13,3 +13,5 @@ export const getPostDetailsUrl = "/postDetails";
 export const getSubmissionsUrl = "";
 export const getPostQuestions = "/questions";
 export const sendAnswerUrl = "/send-answer";
+export const getAllAnswerUrl = "/answer";
+export const getAnswersUserId = "/all-answer-user-id";
