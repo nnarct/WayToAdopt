@@ -45,7 +45,7 @@ class PostModel {
 
     const snapshot = await postCollection
       .where("userID", "==", userId)
-      .select("postTitle", "petPic", "petType", "petDob")
+      .select("postTitle", "petPic", "petType", "petDob", "status")
       .get();
     const posts = [];
     await Promise.all(

@@ -46,7 +46,7 @@ app.post("/submitterinfo", UserController.getSubmitterInfo);
 app.post("/createpost", upload.single("file"), PostController.createNewPost);
 app.get("/pettypes", PetTypeController.getPetTypes);
 app.delete("/post", PostController.deletePost);
-app.put("/post", PostController.closePost);
+app.put("/post", PostController.changePostStatus);
 
 // Start the server
 app.listen(port, () => {
