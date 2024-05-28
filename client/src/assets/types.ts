@@ -93,3 +93,10 @@ export interface AnswersType {
 //   petVaccinated: string;
 //   petWean: string;
 // }
+
+export interface ImageDraggerPhotoType {
+  file: File | null;
+  filename: string;
+  image: string;
+}
+// todo : create post data type
