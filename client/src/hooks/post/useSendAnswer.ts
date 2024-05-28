@@ -36,8 +36,9 @@ const useSendAnswer = () => {
     {
       onSuccess: (res) => {
         if (res.status === 201) {
-          // notification.success({ message: "Answer submitted successfully!" });
-          navigate("/submitSuccess");
+          navigate("/submitSuccess", {
+            state: { message: "ส่งคำขอร้องรับเลี้ยงสัตว์" },
+          });
         } else {
           notification.error({ message: res.data.message });
         }
