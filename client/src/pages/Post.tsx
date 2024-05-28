@@ -21,6 +21,7 @@ const Post = () => {
 
   return (
     <>
+      <Typography.Title level={2}>รายละเอียดโพสต์</Typography.Title>
       <PostDetail postID={postID} />
       <div className="sm:grid grid-cols-3 gap-4 mt-4">
         {isQuestion && (
@@ -28,7 +29,7 @@ const Post = () => {
             <Typography.Title level={3}>คำถาม</Typography.Title>
             {questions.map((q: { question: string }, i: number) => (
               <Typography.Paragraph>
-                {i + 1}.{q.question}
+                {i + 1}. {q.question}
               </Typography.Paragraph>
             ))}
           </Card>
