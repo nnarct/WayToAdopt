@@ -11,24 +11,10 @@ const PetDetailsPage: React.FC = () => {
   const [isOpenQuestion, setIsOpenQuestion] = useState<boolean>(false);
 
   const { postID } = useParams<{ postID: string }>();
-  // const { success, error, loading, post } = usePostAdoptionForm();
 
   if (!postID) {
     return <SomethingWentWrong />;
   }
-
-  // const handelSubmitForm = async (values: any) => {
-  // console.log({ values });
-  // console.log("suibmitting");
-  // await post(values, postID, userID);
-  // if (success) navigate("/");
-  // if (error) {
-  //   notification.error({
-  //     message: error,
-  //     description: "Something went wrong. Please try again later",
-  //   });
-  // }
-  // };
 
   return (
     <>

@@ -38,8 +38,18 @@ class UtilsService {
 
   static formatDate(date: number): string {
     const monthsThai = [
-        "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
-        "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+      "ม.ค.",
+      "ก.พ.",
+      "มี.ค.",
+      "เม.ย.",
+      "พ.ค.",
+      "มิ.ย.",
+      "ก.ค.",
+      "ส.ค.",
+      "ก.ย.",
+      "ต.ค.",
+      "พ.ย.",
+      "ธ.ค.",
     ];
 
     const inputDate = new Date(date * 1000); // Convert epoch to milliseconds
@@ -50,8 +60,72 @@ class UtilsService {
     return `${day} ${monthsThai[month]} ${year}`;
   }
   static getRandomColor(): string {
-    const colors = ["#f56a00","#7265e6","#ffbf00","#00b3c0","#10c231","#da007f","#b300e9",];
+    const colors = [
+      "#f56a00",
+      "#7265e6",
+      "#ffbf00",
+      "#00b3c0",
+      "#10c231",
+      "#da007f",
+      "#b300e9",
+    ];
     return colors[Math.floor(Math.random() * colors.length)];
+  }
+  static renderVaccinated(status: number) {
+    switch (status) {
+      case 0:
+        return "ยังไม่ได้รับการฉีดวัคซีนแล้ว";
+      case 1:
+        return "ได้รับการฉีดวัคซีนแล้ว";
+      default:
+        return "ไม่ระบุ";
+    }
+  }
+
+  static renderWean(status: 0 | 1 | 2) {
+    switch (status) {
+      case 0:
+        return "ยังไม่หย่านม";
+      case 1:
+        return "หย่านมแล้ว";
+      default:
+        return "ไม่ระบุ";
+    }
+  }
+
+  static renderGender(gender: 0 | 1 | 2) {
+    switch (gender) {
+      case 0:
+        return "เพศชาย";
+      case 1:
+        return "เพศหญิง";
+      case 2:
+        return "อื่นๆ";
+      default:
+        return "-";
+    }
+  }
+
+  static renderSterilized(status: 0 | 1 | 2) {
+    switch (status) {
+      case 0:
+        return "ยังไม่ทำหมัน";
+      case 1:
+        return "ทำหมันแล้ว";
+      default:
+        return "ไม่ระบุ";
+    }
+  }
+
+  static renderHouseBreaking(status: 0 | 1 | 2) {
+    switch (status) {
+      case 0:
+        return "ยังไม่ฝึกขับถ่าย";
+      case 1:
+        return "ฝึกขับถ่ายแล้ว";
+      default:
+        return "ไม่ระบุ";
+    }
   }
 }
 
