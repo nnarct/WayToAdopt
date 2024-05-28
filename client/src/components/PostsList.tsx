@@ -12,13 +12,25 @@ const PostsList = ({ posts }: { posts: PostListItemType[] }) => {
           return (
             <List.Item
               className="!pl-3 cursor-pointer hover:bg-primary/5"
-              actions={[<PostListItemAction id={post.id} />]}
+              actions={[
+                <PostListItemAction id={post.id} status={post.status} />,
+              ]}
             >
               <List.Item.Meta
-                avatar={<Avatar src={post.petPic} className="h-12 w-12" />}
+                avatar={
+                  <Avatar
+                    src={post.petPic}
+                    className={
+                      post.status ? "grayscale  h-12 w-12" : "h-12 w-12"
+                    }
+                  />
+                }
                 title={
                   <Typography.Text strong ellipsis>
-                    {post.postTitle}
+                    <span className="text-gray-400">{post.postTitle} </span>
+                    {post.status && (
+                      <span className="text-gray-300">(ประการถูกปิด)</span>
+                    )}
                   </Typography.Text>
                 }
                 description={`${post.petType}, ${UtilsService.formatAge(

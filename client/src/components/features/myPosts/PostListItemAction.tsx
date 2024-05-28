@@ -8,17 +8,22 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import useDeletePost from "@/hooks/post/useDeletePost";
-import useClosePost from "@/hooks/post/useClosePost";
+import { useClosePost, useOpenPost } from "@/hooks/post/useStatusPost";
 
-const PostListItemAction = ({ id }: { id: string }) => {
+const PostListItemAction = ({ id, status }: { id: string; status: 0 | 1 }) => {
   const navigate = useNavigate();
   const { mutate: deletePost, isLoading: isDeleting } = useDeletePost();
   const { mutate: closePost, isLoading: isClosing } = useClosePost();
+  const { mutate: openPost, isLoading: isOpening } = useOpenPost();
 
   const items: MenuProps["items"] = [
     { label: "ดูรายละเอียด", key: "0", icon: <TeamOutlined /> },
     { label: "ดูการตอบกลับ", key: "1", icon: <TeamOutlined /> },
-    { label: "ปิดการประกาศ", key: "2", icon: <CloseOutlined /> },
+    {
+      label: status ? "ปิดการประกาศ" : "เปิดการประกาศ",
+      key: "2",
+      icon: <CloseOutlined />,
+    },
     { label: "ลบ", key: "3", icon: <DeleteOutlined />, danger: true },
   ];
   const onClick: MenuProps["onClick"] = ({ key }) => {
@@ -30,7 +35,11 @@ const PostListItemAction = ({ id }: { id: string }) => {
         navigate(`/myposts/pdetail/${id}/answerslist`);
         break;
       case "2":
-        closePost(id);
+        if (status) {
+          closePost(id);
+        } else {
+          openPost(id);
+        }
         break;
       case "3":
         deletePost(id);
@@ -55,15 +64,26 @@ const PostListItemAction = ({ id }: { id: string }) => {
           ดูการตอบกลับ
         </Button>
         <Divider type="vertical" />
-        <Button
-          type="dashed"
-          danger
-          loading={isClosing}
-          disabled={isClosing}
-          onClick={() => closePost(id)}
-        >
-          ปิดการประกาศ
-        </Button>
+        {status === 0 ? (
+          <Button
+            type="dashed"
+            danger
+            loading={isClosing}
+            disabled={isClosing}
+            onClick={() => closePost(id)}
+          >
+            ปิดการประกาศ
+          </Button>
+        ) : (
+          <Button
+            type="dashed"
+            loading={isOpening}
+            disabled={isOpening}
+            onClick={() => openPost(id)}
+          >
+            เปิดการประกาศ
+          </Button>
+        )}
         <Divider type="vertical" />
         <Button
           danger

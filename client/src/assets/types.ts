@@ -71,6 +71,7 @@ export interface PostListItemType {
   petType: string;
   petDob: number;
   petPic: string;
+  status: 0 | 1;
 }
 export interface QuestionType {
   id: string;
