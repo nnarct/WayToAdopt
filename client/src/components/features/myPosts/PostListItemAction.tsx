@@ -7,11 +7,13 @@ import {
   MoreOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { useDeletePost } from "@/hooks/post/useDeletePost";
+import useDeletePost from "@/hooks/post/useDeletePost";
+import useClosePost from "@/hooks/post/useClosePost";
 
 const PostListItemAction = ({ id }: { id: string }) => {
   const navigate = useNavigate();
   const { mutate: deletePost, isLoading: isDeleting } = useDeletePost();
+  const { mutate: closePost, isLoading: isClosing } = useClosePost();
 
   const items: MenuProps["items"] = [
     { label: "ดูรายละเอียด", key: "0", icon: <TeamOutlined /> },
@@ -19,10 +21,26 @@ const PostListItemAction = ({ id }: { id: string }) => {
     { label: "ปิดการประกาศ", key: "2", icon: <CloseOutlined /> },
     { label: "ลบ", key: "3", icon: <DeleteOutlined />, danger: true },
   ];
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    switch (key) {
+      case "0":
+        navigate(`/myposts/pdetail/${id}`);
+        break;
+      case "1":
+        navigate(`/myposts/pdetail/${id}/answerslist`);
+        break;
+      case "2":
+        closePost(id);
+        break;
+      case "3":
+        deletePost(id);
+        break;
+    }
+  };
 
   return (
     <>
-      <Dropdown className="sm:!hidden" menu={{ items }}>
+      <Dropdown className="sm:!hidden" menu={{ items, onClick }}>
         <Button icon={<MoreOutlined />} />
       </Dropdown>
       <Flex align="center" className="hidden sm:flex">
@@ -37,11 +55,24 @@ const PostListItemAction = ({ id }: { id: string }) => {
           ดูการตอบกลับ
         </Button>
         <Divider type="vertical" />
-        <Button type="dashed" danger>
+        <Button
+          type="dashed"
+          danger
+          loading={isClosing}
+          disabled={isClosing}
+          onClick={() => closePost(id)}
+        >
           ปิดการประกาศ
         </Button>
         <Divider type="vertical" />
-        <Button danger loading={isDeleting} disabled={isDeleting} onClick={()=> deletePost(id)}>ลบ</Button>
+        <Button
+          danger
+          loading={isDeleting}
+          disabled={isDeleting}
+          onClick={() => deletePost(id)}
+        >
+          ลบ
+        </Button>
       </Flex>
     </>
   );

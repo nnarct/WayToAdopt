@@ -3,13 +3,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { notification } from "antd";
 
 const deletePost = async (postID: string) => {
-  await axios.delete(`/post`, {
-    data: { id: postID },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json, text/plain, */*",
-    },
-  });
+  await axios.delete(`/post`, { data: { id: postID } });
 };
 
 export const useDeletePost = () => {
@@ -21,7 +15,9 @@ export const useDeletePost = () => {
       notification.success({ message: "Delete post successfully" });
     },
     onError: () => {
-      notification.success({ message: "Delete post failed. Contact Admin" });
+      notification.error({ message: "Delete post failed. Contact Admin" });
     },
   });
 };
+
+export default useDeletePost;

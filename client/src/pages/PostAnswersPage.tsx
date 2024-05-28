@@ -1,7 +1,7 @@
 import { Flex, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import AnswerCollapse from "@/components/features/myPosts/AnswerCollapse";
-import { Loading, SomethingWentWrong } from "@/components/shared/Result";
+import { Loading, NoAnswer, SomethingWentWrong } from "@/components/shared/Result";
 import { useGetAnswersUserId } from "@/hooks/post/useGetAllAnswer";
 
 const PostAnswersPage = () => {
@@ -17,6 +17,9 @@ const PostAnswersPage = () => {
   }
   if (isError) {
     return <SomethingWentWrong />;
+  }
+  if (data.length === 0) {
+    return <NoAnswer />;
   }
   return (
     <div className="relative min-h-screen flex flex-col justify-between pb-8">

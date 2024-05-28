@@ -1,5 +1,6 @@
 import { Button, Empty, Flex, Result, Spin, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
+import BackButton from "./BackButton";
 
 export const SomethingWentWrong = () => {
   return (
@@ -22,7 +23,7 @@ export const Loading = () => {
 };
 
 export const NoPost = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Flex align="center" justify="center" className="mt-[25vh]">
       <Empty
@@ -32,7 +33,24 @@ export const NoPost = () => {
           </Typography.Title>
         }
       >
-        <Button type="primary" onClick={() => navigate("/myposts/create")}>สร้างโพสต์ของคุณเลย</Button>
+        <Button type="primary" onClick={() => navigate("/myposts/create")}>
+          สร้างโพสต์ของคุณเลย
+        </Button>
+      </Empty>
+    </Flex>
+  );
+};
+export const NoAnswer = () => {
+  return (
+    <Flex align="center" justify="center" className="mt-[25vh]">
+      <Empty
+        description={
+          <Typography.Title level={2}>
+            ยังไม่มีการตอบกลับในขณะนี้
+          </Typography.Title>
+        }
+      >
+        <BackButton />
       </Empty>
     </Flex>
   );
