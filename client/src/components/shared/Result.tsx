@@ -1,4 +1,5 @@
 import { Button, Empty, Flex, Result, Spin, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export const SomethingWentWrong = () => {
   return (
@@ -21,16 +22,17 @@ export const Loading = () => {
 };
 
 export const NoPost = () => {
+  const navigate = useNavigate()
   return (
     <Flex align="center" justify="center" className="mt-[25vh]">
       <Empty
         description={
           <Typography.Title level={2}>
-            Sorry, no post at this moment.
+            ขออภัยในขณะนี้ไม่มีโพสต์ของคุณแสดงอยู่
           </Typography.Title>
         }
       >
-        <Button type="primary">Create your own post Now!</Button>
+        <Button type="primary" onClick={() => navigate("/myposts/create")}>สร้างโพสต์ของคุณเลย</Button>
       </Empty>
     </Flex>
   );
