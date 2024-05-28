@@ -7,9 +7,12 @@ import {
   MoreOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+import { useDeletePost } from "@/hooks/post/useDeletePost";
 
 const PostListItemAction = ({ id }: { id: string }) => {
   const navigate = useNavigate();
+  const { mutate: deletePost, isLoading: isDeleting } = useDeletePost();
+
   const items: MenuProps["items"] = [
     { label: "ดูรายละเอียด", key: "0", icon: <TeamOutlined /> },
     { label: "ดูการตอบกลับ", key: "1", icon: <TeamOutlined /> },
@@ -38,7 +41,7 @@ const PostListItemAction = ({ id }: { id: string }) => {
           ปิดการประกาศ
         </Button>
         <Divider type="vertical" />
-        <Button danger>ลบ</Button>
+        <Button danger loading={isDeleting} disabled={isDeleting} onClick={()=> deletePost(id)}>ลบ</Button>
       </Flex>
     </>
   );
