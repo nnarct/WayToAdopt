@@ -180,7 +180,7 @@ class PostService {
       petType: petTypeRef,
       createdAt: Date.now(),
       status: 0,
-      userID:userId,
+      userID: userId,
     });
     const questions = data.questions;
     for (const questionData of questions) {
@@ -189,6 +189,22 @@ class PostService {
       });
     }
     return postRef.id;
+  }
+
+  static async deletePost(id) {
+    try {
+      const post = new PostModel(id);
+      const isDelete = await post.deletePost();
+      if (!isDelete) {
+        return false;
+      }
+      if ((await PostModel.getPostFromDatabase()) === null) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
   }
 }
 module.exports = PostService;

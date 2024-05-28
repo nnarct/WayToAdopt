@@ -148,7 +148,18 @@ class PostController {
     }
   }
 
-  static async deletePost(req, res) {}
+  static async deletePost(req, res) {
+    try {
+      const postId = req.body.id;
+      if (!postId) {
+        return res.status(400).json({ message: "Post ID is required" });
+      }
+      await PostService.deletePost(postId);
+      return res.status(201).json("Deleted successfully");
+    } catch (error) {
+      return res.status(500).send({ message: error.message });
+    }
+  }
 }
 
 module.exports = PostController;

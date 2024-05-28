@@ -1,4 +1,4 @@
-const { db } = require("../firebaseConfig");
+const { db, bucket } = require("../firebaseConfig");
 
 class PostModel {
   constructor(id) {
@@ -168,8 +168,54 @@ class PostModel {
         answer: ans.docs[0].data().answer,
       });
       i++;
-    } return answers
+    }
+    return answers;
   }
+
+  static extractFilePath(petPicUrl) {
+    const matches = petPicUrl.match(/o\/(.*?)\?alt=media/);
+    return matches?.[1] ? decodeURIComponent(matches[1]) : null;
+  }
+
+  async deleteFile(petPicUrl) {
+    try {
+      const filePath = this.extractFilePath(petPicUrl);
+      await bucket.file(filePath).delete();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async getPostFromDatabase() {
+    try {
+      const doc = await this.post.get();
+      return doc.exists ? { id: doc.id, ...doc.data() } : null;
+    } catch (error) {
+      console.error("Error getting post from database:", error);
+      return null;
+    }
+  }
+  async deletePostFromDatabase() {
+    try {
+      await this.post.delete();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async deletePost() {
+    console.log("delete post in model");
+    const post = await this.getPostFromDatabase();
+    if (post?.petPic) {
+      await this.deleteFile(post.petPic);
+    }
+    const isDeletePostInModel = await this.deletePostFromDatabase();
+    console.log({ isDeletePostInModel });
+    return isDeletePostInModel;
+  }
+
   // Implement other model methods (getPostById, updatePost, deletePost) similarly
 }
 
