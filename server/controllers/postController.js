@@ -39,6 +39,14 @@ class PostController {
       return res.status(500).json({ message: error.message });
     }
   }
+  static async retrieveAllActivePost(req, res) {
+    try {
+      const allPosts = await PostService.retrieveAllActivePost();
+      return res.status(201).json({ data: allPosts });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 
   static async retrievePostsByUser(req, res) {
     try {
@@ -59,6 +67,7 @@ class PostController {
       return res.status(500).json({ message: error.message });
     }
   }
+  
 
   static async getQuestions(req, res) {
     const id = req.body.postID;
@@ -110,6 +119,7 @@ class PostController {
       return res.status(500).json({ message: error.message });
     }
   }
+
   static async getAnswer(req, res) {
     const postId = req.body.postId;
     const userId = req.body.userId;

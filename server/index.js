@@ -29,7 +29,7 @@ const upload = multer({ storage: storage }); // initialize multer for file uploa
 
 // Routes setup
 // app.post('/user-profile', UserController.getUserProfile);
-app.get("/posts", PostController.retrieveAllPost);
+app.get("/posts", PostController.retrieveAllActivePost);
 // app.use("/api", userRoutes);
 // app.post("/register", Validator.createUser, AuthController.createUser);
 app.post("/register", AuthController.createUser);
