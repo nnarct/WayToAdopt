@@ -206,5 +206,13 @@ class PostService {
       return false;
     }
   }
+  static async closePost(id) {
+    try {
+      const post = new PostModel(id);
+      return await post.updateStatus(1); // 0 open, 1 close
+    } catch (error) {
+      return false;
+    }
+  }
 }
 module.exports = PostService;

@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:2545"],
-    methods: ["POST", "GET", "DELETE"],
+    methods: ["POST", "GET", "DELETE", "PUT"],
     credentials: true,
   })
 );
@@ -46,6 +46,7 @@ app.post("/submitterinfo", UserController.getSubmitterInfo);
 app.post("/createpost", upload.single("file"), PostController.createNewPost);
 app.get("/pettypes", PetTypeController.getPetTypes);
 app.delete("/post", PostController.deletePost);
+app.put("/post", PostController.closePost);
 
 // Start the server
 app.listen(port, () => {

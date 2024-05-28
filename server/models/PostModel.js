@@ -215,6 +215,14 @@ class PostModel {
     console.log({ isDeletePostInModel });
     return isDeletePostInModel;
   }
+  
+  async updateStatus(status) {
+    try {
+      return await this.post.update({ status });
+    } catch (error) {
+      return false
+    }
+  }
 
   // Implement other model methods (getPostById, updatePost, deletePost) similarly
 }

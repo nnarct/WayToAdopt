@@ -160,6 +160,22 @@ class PostController {
       return res.status(500).send({ message: error.message });
     }
   }
+  static async closePost(req, res) {
+    try {
+      console.log("closing in controller");
+      const postId = req.body.id;
+      console.log({ body: req.body });
+      if (!postId) {
+        return res.status(400).json({ message: "Post ID is required" });
+      }
+      await PostService.closePost(postId);
+      return res.status(201).json("Closed successfully");
+    } catch (error) {
+      console.log({ error });
+
+      return res.status(500).send({ message: error.message });
+    }
+  }
 }
 
 module.exports = PostController;
