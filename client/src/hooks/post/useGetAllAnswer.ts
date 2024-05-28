@@ -16,7 +16,7 @@ const useGetAnswer = (postId: string, userId: string) => {
 };
 export const useGetAnswersUserId = (postId: string) => {
   const { token } = useAuth();
-  return useQuery("answerUserId", async () => {
+  return useQuery(`answerUserId${postId}`, async () => {
     const { data } = await axios.post(getAnswersUserId, { postId, token });
     return data;
   });

@@ -15,7 +15,6 @@ export const useClosePost = () => {
       notification.success({ message: "Close post successfully" });
     },
     onError: (error) => {
-      console.log({ error });
       notification.error({ message: "Close post failed. Contact Admin" });
     },
   });
@@ -30,7 +29,6 @@ export const useOpenPost = () => {
       notification.success({ message: "Open post successfully" });
     },
     onError: (error) => {
-      console.log({ error });
       notification.error({ message: "Open post failed. Contact Admin" });
     },
   });

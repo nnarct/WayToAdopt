@@ -5,7 +5,7 @@ import { getPostQuestions } from "@/assets/api";
 
 const useGetQuestions = (postID: string) => {
   const { token } = useAuth(); // Assuming useAuth is a hook that returns the authentication token
-  return useQuery("postQuestions", async () => {
+  return useQuery(`postQuestions${postID}`, async () => {
     const { data } = await axios.post(getPostQuestions, { postID, token });
     return data;
   });

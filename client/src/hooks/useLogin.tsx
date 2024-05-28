@@ -19,7 +19,7 @@ const login = async (data: LoginCredentialsType) => {
     const token = idTokenResult.token;
     const expirationTime = dayjs(idTokenResult.expirationTime).valueOf();
     return {
-      data: { message: "Login usccessfully" },
+      data: { message: "Login successfully" },
       status: 201,
       token,
       expirationTime,
