@@ -1,7 +1,8 @@
 // const firebase = require("../firebaseConfig");
-const { db } = require("../firebaseConfig");
+const { db, bucket } = require("../firebaseConfig");
 const PostService = require("../services/PostService");
 const AuthenticationService = require("../services/AuthenticationService");
+const { v4: uuidv4 } = require("uuid");
 class PostController {
   constructor(postService) {
     this.postService = postService;
@@ -128,6 +129,22 @@ class PostController {
     } catch (error) {
       console.log({ error });
       return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async createNewPost(req, res) {
+    try {
+      const file = req.file;
+      const photoUri = await PostService.uploadPhoto(file);
+      if (photoUri === null || photoUri?.length === 0) {
+        return res.status(500).send({ message: "Upload photo error" });
+      }
+      const post = JSON.parse(req.body.post);
+      post.petPic = photoUri;
+      const resp = await PostService.createPost(post, req.body.token);
+      return res.status(201).json(resp);
+    } catch (error) {
+      return res.status(500).send({ message: error.message });
     }
   }
 

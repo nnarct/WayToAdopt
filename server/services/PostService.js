@@ -1,7 +1,8 @@
-const { db } = require("../firebaseConfig");
+const { db, bucket } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
 const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
+const { v4: uuidv4 } = require("uuid");
 
 class PostService {
   async createPostWithQuestions(postData, questionsData) {
@@ -123,6 +124,71 @@ class PostService {
       console.log({ error });
       throw new Error(error);
     }
+  }
+
+  static async uploadPhoto(file) {
+    const fileName = `petPic/${uuidv4()}_${file.originalname}`;
+    const fileUpload = bucket.file(fileName);
+    const metadata = {
+      metadata: {
+        firebaseStorageDownloadTokens: uuidv4(),
+      },
+      contentType: file.mimetype,
+      cacheControl: "public, max-age=31536000",
+    };
+    const blobStream = fileUpload.createWriteStream({
+      metadata,
+      gzip: true,
+    });
+    let publicUri;
+    blobStream.on("error", (error) => {
+      console.log("blobStream error", error);
+      return null;
+    });
+    blobStream.on("finish", async () => {
+      publicUri = `https://firebasestorage.googleapis.com/v0/b/${
+        bucket.name
+      }/o/${encodeURIComponent(fileName)}?alt=media&token=${
+        metadata.metadata.firebaseStorageDownloadTokens
+      }`;
+      return publicUri;
+    });
+    blobStream.end(file.buffer);
+    return new Promise((resolve, reject) => {
+      blobStream.on("finish", () => {
+        resolve(publicUri);
+      });
+      blobStream.on("error", (error) => {
+        reject(error);
+      });
+    });
+  }
+
+  static async createPost(data, token) {
+    const userId = await AuthenticationService.getUidByToken(token);
+    const petTypeRef = db.collection("petType").doc(data.petType);
+    const postRef = await db.collection("post").add({
+      postTitle: data.postTitle,
+      petBreed: data.petBreed,
+      petGender: data.petGender,
+      petDob: data.petDob,
+      petVaccinated: data.petVaccinated,
+      petSterilized: data.petSterilized,
+      petWean: data.petWean,
+      petHouseBreaking: data.petHouseBreaking,
+      petPic: data.petPic,
+      petType: petTypeRef,
+      createdAt: Date.now(),
+      status: 0,
+      userID:userId,
+    });
+    const questions = data.questions;
+    for (const questionData of questions) {
+      await postRef.collection("question").add({
+        question: questionData,
+      });
+    }
+    return postRef.id;
   }
 }
 module.exports = PostService;
