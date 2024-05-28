@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { Button, Flex, Divider, Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import {
+  ArrowUpOutlined,
   CloseOutlined,
+  InfoCircleOutlined,
   DeleteOutlined,
   MoreOutlined,
   TeamOutlined,
@@ -17,12 +19,12 @@ const PostListItemAction = ({ id, status }: { id: string; status: 0 | 1 }) => {
   const { mutate: openPost, isLoading: isOpening } = useOpenPost();
 
   const items: MenuProps["items"] = [
-    { label: "ดูรายละเอียด", key: "0", icon: <TeamOutlined /> },
+    { label: "ดูรายละเอียด", key: "0", icon: <InfoCircleOutlined /> },
     { label: "ดูการตอบกลับ", key: "1", icon: <TeamOutlined /> },
     {
-      label: status ? "ปิดการประกาศ" : "เปิดการประกาศ",
+      label: status ? "เปิดประกาศ" : "ปิดการประกาศ",
       key: "2",
-      icon: <CloseOutlined />,
+      icon: status ? <ArrowUpOutlined /> : <CloseOutlined />,
     },
     { label: "ลบ", key: "3", icon: <DeleteOutlined />, danger: true },
   ];
@@ -36,9 +38,9 @@ const PostListItemAction = ({ id, status }: { id: string; status: 0 | 1 }) => {
         break;
       case "2":
         if (status) {
-          closePost(id);
-        } else {
           openPost(id);
+        } else {
+          closePost(id);
         }
         break;
       case "3":
@@ -49,10 +51,10 @@ const PostListItemAction = ({ id, status }: { id: string; status: 0 | 1 }) => {
 
   return (
     <>
-      <Dropdown className="sm:!hidden" menu={{ items, onClick }}>
+      <Dropdown className="md:!hidden" menu={{ items, onClick }}>
         <Button icon={<MoreOutlined />} />
       </Dropdown>
-      <Flex align="center" className="hidden sm:flex">
+      <Flex align="center" className="hidden md:flex">
         <Button onClick={() => navigate(`/myposts/pdetail/${id}`)}>
           ดูรายละเอียด
         </Button>
@@ -64,7 +66,16 @@ const PostListItemAction = ({ id, status }: { id: string; status: 0 | 1 }) => {
           ดูการตอบกลับ
         </Button>
         <Divider type="vertical" />
-        {status === 0 ? (
+        {status ? (
+          <Button
+            type="dashed"
+            loading={isOpening}
+            disabled={isOpening}
+            onClick={() => openPost(id)}
+          >
+            เปิดประกาศ
+          </Button>
+        ) : (
           <Button
             type="dashed"
             danger
@@ -73,15 +84,6 @@ const PostListItemAction = ({ id, status }: { id: string; status: 0 | 1 }) => {
             onClick={() => closePost(id)}
           >
             ปิดการประกาศ
-          </Button>
-        ) : (
-          <Button
-            type="dashed"
-            loading={isOpening}
-            disabled={isOpening}
-            onClick={() => openPost(id)}
-          >
-            เปิดการประกาศ
           </Button>
         )}
         <Divider type="vertical" />

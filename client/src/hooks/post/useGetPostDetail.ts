@@ -5,7 +5,7 @@ import { getPostDetailsUrl } from "@/assets/api";
 
 const useGetPostDetail = (postID: string) => {
   const { token } = useAuth(); // Assuming useAuth is a hook that returns the authentication token
-  return useQuery("postDetails", async () => {
+  return useQuery(`postDetails${postID}`, async () => {
     const { data } = await axios.post(getPostDetailsUrl, { postID , token });
     return data;
   });
