@@ -77,7 +77,7 @@ class PostModel {
         petType: await petType.getName(),
       };
     } else {
-      console.log("post doens't exist");
+      console.log("post doesn't exist");
     }
     return null;
   }
@@ -228,7 +228,6 @@ class PostModel {
         const petTypeData = postData.petType
           ? await postData.petType.get()
           : null;
-        console.log("petTypeData");
         return {
           id: doc.id,
           ...postData,

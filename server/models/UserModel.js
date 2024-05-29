@@ -5,7 +5,7 @@ class UserModel {
     return await userCollection.doc(userId).set(userData);
   }
 
-  async getUserById(userId) {
+  static async getUserById(userId) {
     const userCollection = db.collection("user");
     const userDoc = await userCollection.doc(userId).get();
     if (!userDoc.exists) {
@@ -14,15 +14,6 @@ class UserModel {
     return { id: userDoc.id, ...userDoc.data() };
   }
 
-  // async updateUser(userId, userData) {
-  //   await this.userCollection.doc(userId).update(userData);
-  //   const updatedUserDoc = await this.userCollection.doc(userId).get();
-  //   return { id: updatedUserDoc.id, ...updatedUserDoc.data() };
-  // }
-
-  // async deleteUser(userId) {
-  //   await this.userCollection.doc(userId).delete();
-  // }
 }
 
 module.exports = UserModel;

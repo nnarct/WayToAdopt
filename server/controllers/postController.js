@@ -65,7 +65,7 @@ class PostController {
     const postId = req.body.postId;
     const token = req.body.token;
     try {
-      const hasAccess = await this.authService.verifyPostOwner(token, postId);
+      const hasAccess = await AuthenticationService.verifyPostOwner(token, postId);
       if (!hasAccess) {
         return res
           .status(401)
@@ -84,7 +84,7 @@ class PostController {
     const userId = req.body.userId;
     const token = req.body.token;
     try {
-      const hasAccess = await this.authService.verifyPostOwner(token, postId);
+      const hasAccess = await AuthenticationService.verifyPostOwner(token, postId);
       if (!hasAccess) {
         return res
           .status(401)

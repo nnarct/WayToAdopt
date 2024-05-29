@@ -9,18 +9,15 @@ const PostController = require("./controllers/postController");
 const AuthController = require("./controllers/authController");
 const UserController = require("./controllers/userController");
 const PetTypeController = require("./controllers/petTypeController");
-
-const UserModel = require("./models/UserModel");
 const UserService = require("./services/UserService");
 const AuthenticationService = require("./services/AuthenticationService");
 const PostService = require("./services/PostService");
-const PostModel = require("./models/Postmodel");
 
 const authenticationService = new AuthenticationService();
-const userModel = new UserModel();
+
 const postService = new PostService(authenticationService);
-const userService = new UserService(userModel, authenticationService);
-const userController = new UserController(userService, authenticationService);
+
+const userController = new UserController();
 const postController = new PostController(authenticationService, postService);
 
 const app = express();

@@ -15,16 +15,13 @@ class AuthenticationService {
     }
   }
 
-  async getUidByToken(token) {
-    const dat = await auth.verifyIdToken(token);
-    return dat.uid;
-  }
+
   static async getUidByToken(token) {
     const dat = await auth.verifyIdToken(token);
     return dat.uid;
   }
 
-  async verifyPostOwner(token, postId) {
+  static async verifyPostOwner(token, postId) {
     const post = new PostModel(postId);
     const ownerUid = await post.getUid();
     const userId = await this.getUidByToken(token);
