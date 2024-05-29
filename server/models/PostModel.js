@@ -1,4 +1,5 @@
-const { db, bucket } = require("../firebaseConfig");
+const { db, bucket, uuidv4 } = require("../firebaseConfig");
+const PetTypeModel = require("./PetTypeModel");
 
 class PostModel {
   constructor(id) {
@@ -23,23 +24,6 @@ class PostModel {
     }
   }
 
-  //   async createPost(userId, postData) {
-  //       const { questions, ...postDataWithoutQuestions } = postData;
-  //       if (!questions || questions.length === 0) {
-  //           throw new Error('At least one question is required for a post.');
-  //       }
-
-  //       const newPost = this.postsCollection.doc();
-  //       await newPost.set({ userId, ...postDataWithoutQuestions });
-
-  //       // Add questions to the post
-  //       await Promise.all(questions.map(async (question) => {
-  //           await newPost.collection('questions').add(question);
-  //       }));
-
-  //       return { id: newPost.id, ...postDataWithoutQuestions, questions };
-  //   }
-
   static async getUserPosts(userId) {
     const postCollection = db.collection("post");
 
@@ -47,26 +31,22 @@ class PostModel {
       .where("userID", "==", userId)
       .select("postTitle", "petPic", "petType", "petDob", "status")
       .get();
-    const posts = [];
-    await Promise.all(
+
+    const posts = await Promise.all(
       snapshot.docs.map(async (doc) => {
         const postData = doc.data();
         const petTypeData = postData.petType
           ? await postData.petType.get()
           : null;
-        posts.push({
+
+        return {
           id: doc.id,
           ...postData,
-          petType: petTypeData ? petTypeData.data().name : null,
-        });
-        // const questionsSnapshot = await doc.ref.collection("questions").get();
-        // const questions = [];
-        // questionsSnapshot.forEach((questionDoc) => {
-        //   questions.push({ id: questionDoc.id, ...questionDoc.data() });
-        // });
-        // posts.push({ id: doc.id, ...postData, questions });
+          petType: petTypeData.data().name,
+        };
       })
     );
+
     return posts;
   }
 
@@ -76,14 +56,16 @@ class PostModel {
     const doc = await postRef.get();
     if (doc.exists) {
       const postData = doc.data();
-      const petTypeData = postData.petType
-        ? await postData.petType.get()
-        : null;
+      const petType = new PetTypeModel(postData.petType);
+      const petTypeName = await petType.getName();
+      // const p = await postData.petType.get();
       return {
         id: doc.id,
         ...postData,
-        petType: petTypeData ? petTypeData.data().name : null,
+        petType: petTypeName,
       };
+    } else {
+      console.log("postdoenst exist")
     }
     return null;
   }
@@ -153,7 +135,6 @@ class PostModel {
   }
 
   async getUserAnswer(userID) {
-    // const post = await db.collection("post").doc(postId);
     const question = await this.post.collection("question").get();
     let i = 0;
     const answers = [];
@@ -206,7 +187,6 @@ class PostModel {
   }
 
   async deletePost() {
-    console.log("delete post in model");
     const post = await this.getPostFromDatabase();
     if (post?.petPic) {
       await this.deleteFile(post.petPic);
@@ -215,16 +195,120 @@ class PostModel {
     console.log({ isDeletePostInModel });
     return isDeletePostInModel;
   }
-  
+
   async updateStatus(status) {
     try {
       return await this.post.update({ status });
     } catch (error) {
-      return false
+      return false;
     }
   }
 
-  // Implement other model methods (getPostById, updatePost, deletePost) similarly
+  static async getActivePosts() {
+    const snapshot = await db
+      .collection("post")
+      .where("status", "==", 0)
+      .select("postTitle", "petType", "petBreed", "petDob", "status", "petPic")
+      .get();
+
+    const posts = await Promise.all(
+      snapshot.docs.map(async (doc) => {
+        const postData = doc.data();
+        const petTypeData = postData.petType
+          ? await postData.petType.get()
+          : null;
+        return {
+          id: doc.id,
+          ...postData,
+          petType: petTypeData ? petTypeData.data().name : null,
+        };
+      })
+    );
+    return posts;
+  }
+  async submitAnswers(answers) {
+    const batch = db.batch();
+    for (const { questionId, answerData } of answers) {
+      const answerRef = this.post
+        .collection("question")
+        .doc(questionId)
+        .collection("answer")
+        .doc();
+      batch.set(answerRef, answerData);
+    }
+    await batch.commit();
+  }
+  static async getAnswersUserId(postId) {
+    const postRef = db.collection("post").doc(postId);
+    const questionSnapshot = await postRef
+      .collection("question")
+      .limit(1)
+      .get();
+    const question = questionSnapshot.docs[0];
+    const answers = await question.ref.collection("answer").get();
+    const userIds = answers.docs.map((a) => a.data().userID);
+    return userIds;
+  }
+
+  static async createPost(data, userId) {
+    const petTypeRef = await PetTypeModel.getRefById(data.petType);
+    const postRef = await db.collection("post").add({
+      postTitle: data.postTitle,
+      petBreed: data.petBreed,
+      petGender: data.petGender,
+      petDob: data.petDob,
+      petVaccinated: data.petVaccinated,
+      petSterilized: data.petSterilized,
+      petWean: data.petWean,
+      petHouseBreaking: data.petHouseBreaking,
+      petPic: data.petPic,
+      petType: petTypeRef,
+      createdAt: Date.now(),
+      status: 0,
+      userID: userId,
+    });
+
+    const questions = data.questions;
+    for (const questionData of questions) {
+      await postRef.collection("question").add({
+        question: questionData,
+      });
+    }
+
+    return postRef.id;
+  }
+
+  static async uploadPhoto(file) {
+    const fileName = `petPic/${uuidv4()}_${file.originalname}`;
+    const fileUpload = bucket.file(fileName);
+    const metadata = {
+      metadata: {
+        firebaseStorageDownloadTokens: uuidv4(),
+      },
+      contentType: file.mimetype,
+      cacheControl: "public, max-age=31536000",
+    };
+    const blobStream = fileUpload.createWriteStream({
+      metadata,
+      gzip: true,
+    });
+    return new Promise((resolve, reject) => {
+      blobStream.on("error", (error) => {
+        console.log("blobStream error", error);
+        reject(error);
+      });
+      blobStream.on("finish", async () => {
+        const publicUri = `https://firebasestorage.googleapis.com/v0/b/${
+          bucket.name
+        }/o/${encodeURIComponent(fileName)}?alt=media&token=${
+          metadata.metadata.firebaseStorageDownloadTokens
+        }`;
+        resolve(publicUri);
+      });
+      blobStream.end(file.buffer);
+    });
+  }
 }
+
 
 module.exports = PostModel;

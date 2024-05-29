@@ -11,9 +11,9 @@ class UserController {
     }
   }
 
-  static async getUserByToken(req, res) {
+  static async getUser(req, res) {
     try {
-      const user = await UserService.getUserByToken(req.body.token);
+      const user = await UserService.getUserByToken(req.token);
       res.status(201).json(user);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -21,7 +21,7 @@ class UserController {
   }
 
   static async getSubmitterInfo(req, res) {
-    const token = req.body.token;
+    const token = req.token;
     const postId = req.body.postId;
     const userId = req.body.userId;
     try {
@@ -40,7 +40,7 @@ class UserController {
       res.status(500).json({ error: error.message });
     }
   }
-  // Implement other controller methods (getUserById, updateUser, deleteUser) similarly
+ 
 }
 
 module.exports = UserController;

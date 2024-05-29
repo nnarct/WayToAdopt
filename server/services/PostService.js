@@ -1,90 +1,32 @@
 const { db, bucket } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
+const PetTypeModel = require("../models/PetTypeModel");
 const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
 const { v4: uuidv4 } = require("uuid");
 
 class PostService {
-  async createPostWithQuestions(postData, questionsData) {
+  static async getActivePosts() {
     try {
-      const postId = await this.postModel.createPost(postData);
-      await this.questionModel.createQuestions(postId, questionsData);
-      return postId;
+      const posts = await PostModel.getActivePosts();
+      return posts;
     } catch (error) {
-      console.error("Error creating post with questions:", error);
-      throw error;
+      console.error("Error retrieving posts: ", error);
+      throw new Error(`Error retrieving posts: ${error.message}`);
     }
   }
 
-  static async retrieveAllPost() {
+  static async retrieveUsersPosts(token) {
     try {
-      const snapshot = await db
-        .collection("post")
-        .select(
-          "id",
-          "postTitle",
-          "petType",
-          "petBreed",
-          "petDob",
-          "status",
-          "petPic"
-        )
-        .get();
-      return await Promise.all(
-        snapshot.docs.map(async (doc) => {
-          const postData = doc.data();
-          const petTypeData = postData.petType
-            ? await postData.petType.get()
-            : null;
-          return {
-            id: doc.id,
-            ...postData,
-            petType: petTypeData ? petTypeData.data().name : null,
-          };
-        })
-      );
+      const uid = await AuthenticationService.getUidByToken(token);
+      if (!uid) {
+        throw new Error("Token invalid.");
+      }
+      const posts = await PostModel.getUserPosts(uid);
+      return posts;
     } catch (error) {
-      console.error("Error retrieving posts: ", error);
-      throw new Error("Error retrieving posts");
+      throw new Error(`Error while getting user's posts: ${error.message}`);
     }
-  }
-  static async retrieveAllActivePost() {
-    try {
-      const snapshot = await db
-        .collection("post").where("status", "==", 0)
-        .select(
-          "id",
-          "postTitle",
-          "petType",
-          "petBreed",
-          "petDob",
-          "status",
-          "petPic"
-        )
-        .get();
-      return await Promise.all(
-        snapshot.docs.map(async (doc) => {
-          const postData = doc.data();
-          const petTypeData = postData.petType
-            ? await postData.petType.get()
-            : null;
-          return {
-            id: doc.id,
-            ...postData,
-            petType: petTypeData ? petTypeData.data().name : null,
-          };
-        })
-      );
-    } catch (error) {
-      console.error("Error retrieving posts: ", error);
-      throw new Error("Error retrieving posts");
-    }
-  }
-
-  static async retrievePostsByUser(token) {
-    // get token to uid
-    const uid = await AuthenticationService.getUidByToken(token);
-    return await PostModel.getUserPosts(uid);
   }
 
   static async getPostById(id) {
@@ -95,47 +37,45 @@ class PostService {
       }
       return post;
     } catch (error) {
-      console.error("Error getting document:", error);
-      throw error;
+      throw new Error(`Error getting post by Id: ${error.message}`);
     }
   }
 
   static async getQuestions(id) {
-    const post = new PostModel(id);
-    return await post.getQuestions();
+    try {
+      const post = new PostModel(id);
+      const questions = await post.getQuestions();
+      return questions;
+    } catch (error) {
+      throw new Error(`Error getting questions by post id: ${error.message}`);
+    }
   }
 
   static async submitAnswers(userId, postId, answers) {
-    const post = new PostModel(postId);
-    const batch = db.batch();
-    for (const answer of answers) {
-      const questionId = answer.questionId;
-      const answerData = {
-        answer: answer.answer,
-        userID: userId,
-      };
-
-      // Reference to the specific question's answer sub-collection
-      const answerRef = post.post
-        .collection("question")
-        .doc(questionId)
-        .collection("answer")
-        .doc(); // Generate a new document ID
-
-      batch.set(answerRef, answerData);
+    try {
+      const formattedAnswers = answers.map((answer) => ({
+        questionId: answer.questionId,
+        answerData: {
+          answer: answer.answer,
+          userID: userId,
+        },
+      }));
+      const post = new PostModel(postId);
+      await post.submitAnswers(formattedAnswers);
+    } catch (error) {
+      console.error("Error submitting answers: ", error);
+      throw new Error("Error submitting answers");
     }
-    await batch.commit();
   }
+
   static async getAnswersUserId(postId) {
-    const post = db.collection("post").doc(postId);
-    const questionSnapshot = await post.collection("question").limit(1).get();
-    const question = questionSnapshot.docs[0];
-    const answers = await question.ref.collection("answer").get();
-    const ret = [];
-    for (const a of answers.docs) {
-      ret.push(a.data().userID);
+    try {
+      const userIds = await PostModel.getAnswersUserId(postId);
+      return userIds;
+    } catch (error) {
+      console.error("Error retrieving user IDs for answers: ", error);
+      throw new Error("Error retrieving user IDs for answers");
     }
-    return ret;
   }
 
   static async getAnswerOfUser(postId, userId) {
@@ -159,68 +99,29 @@ class PostService {
   }
 
   static async uploadPhoto(file) {
-    const fileName = `petPic/${uuidv4()}_${file.originalname}`;
-    const fileUpload = bucket.file(fileName);
-    const metadata = {
-      metadata: {
-        firebaseStorageDownloadTokens: uuidv4(),
-      },
-      contentType: file.mimetype,
-      cacheControl: "public, max-age=31536000",
-    };
-    const blobStream = fileUpload.createWriteStream({
-      metadata,
-      gzip: true,
-    });
-    let publicUri;
-    blobStream.on("error", (error) => {
-      console.log("blobStream error", error);
-      return null;
-    });
-    blobStream.on("finish", async () => {
-      publicUri = `https://firebasestorage.googleapis.com/v0/b/${
-        bucket.name
-      }/o/${encodeURIComponent(fileName)}?alt=media&token=${
-        metadata.metadata.firebaseStorageDownloadTokens
-      }`;
-      return publicUri;
-    });
-    blobStream.end(file.buffer);
-    return new Promise((resolve, reject) => {
-      blobStream.on("finish", () => {
-        resolve(publicUri);
-      });
-      blobStream.on("error", (error) => {
-        reject(error);
-      });
-    });
+    try {
+      if (!file) {
+        throw new Error("File is missing.");
+      }
+      const uri = await PostModel.uploadPhoto(file);
+      if (uri === null || uri?.length === 0) {
+        throw new Error("Upload file error");
+      }
+      return uri;
+    } catch (error) {
+      throw new Error(`Uploading file error: ${error.message}`);
+    }
   }
 
   static async createPost(data, token) {
-    const userId = await AuthenticationService.getUidByToken(token);
-    const petTypeRef = db.collection("petType").doc(data.petType);
-    const postRef = await db.collection("post").add({
-      postTitle: data.postTitle,
-      petBreed: data.petBreed,
-      petGender: data.petGender,
-      petDob: data.petDob,
-      petVaccinated: data.petVaccinated,
-      petSterilized: data.petSterilized,
-      petWean: data.petWean,
-      petHouseBreaking: data.petHouseBreaking,
-      petPic: data.petPic,
-      petType: petTypeRef,
-      createdAt: Date.now(),
-      status: 0,
-      userID: userId,
-    });
-    const questions = data.questions;
-    for (const questionData of questions) {
-      await postRef.collection("question").add({
-        question: questionData,
-      });
+    try {
+      const userId = await AuthenticationService.getUidByToken(token);
+      const postId = await PostModel.createPost(data, userId);
+      return postId;
+    } catch (error) {
+      console.error("Error creating post: ", error);
+      throw new Error("Error creating post");
     }
-    return postRef.id;
   }
 
   static async deletePost(id) {

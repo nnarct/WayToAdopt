@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 const { getFirestore } = require("firebase-admin/firestore");
-
+const { v4: uuidv4 } = require("uuid");
 admin.initializeApp({
   credential: admin.credential.cert({
     type: process.env.FIREBASE_TYPE,
@@ -29,4 +29,4 @@ if (!auth) {
   console.log("Firebase auth exists");
 }
 
-module.exports = { db, auth, bucket };
+module.exports = { db, auth, bucket,uuidv4  };
