@@ -58,61 +58,19 @@ class UtilsService {
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
-  static renderVaccinated(status: number) {
-    switch (status) {
-      case 0:
-        return "ยังไม่ได้รับการฉีดวัคซีนแล้ว";
-      case 1:
-        return "ได้รับการฉีดวัคซีนแล้ว";
-      default:
-        return "ไม่ระบุ";
-    }
-  }
 
-  static renderWean(status: 0 | 1 | 2) {
-    switch (status) {
-      case 0:
-        return "ยังไม่หย่านม";
-      case 1:
-        return "หย่านมแล้ว";
-      default:
-        return "ไม่ระบุ";
-    }
-  }
+  static renderStatus(status: number, type: 'vaccinated' | 'wean' | 'gender' | 'sterilized' | 'houseBreaking'): string {
+    const statusMappings: { [key: string]: {
+      default: string; [key: number]: string 
+} } = {
+      vaccinated: { 0: "ยังไม่ได้รับการฉีดวัคซีน", 1: "ได้รับการฉีดวัคซีนแล้ว", default: "ไม่ระบุ" },
+      wean: { 0: "ยังไม่หย่านม", 1: "หย่านมแล้ว", default: "ไม่ระบุ" },
+      gender: { 0: "เพศชาย", 1: "เพศหญิง", 2: "อื่นๆ", default: "-" },
+      sterilized: { 0: "ยังไม่ทำหมัน", 1: "ทำหมันแล้ว", default: "ไม่ระบุ" },
+      houseBreaking: { 0: "ยังไม่ฝึกขับถ่าย", 1: "ฝึกขับถ่ายแล้ว", default: "ไม่ระบุ" },
+    };
 
-  static renderGender(gender: 0 | 1 | 2) {
-    switch (gender) {
-      case 0:
-        return "เพศชาย";
-      case 1:
-        return "เพศหญิง";
-      case 2:
-        return "อื่นๆ";
-      default:
-        return "-";
-    }
-  }
-
-  static renderSterilized(status: 0 | 1 | 2) {
-    switch (status) {
-      case 0:
-        return "ยังไม่ทำหมัน";
-      case 1:
-        return "ทำหมันแล้ว";
-      default:
-        return "ไม่ระบุ";
-    }
-  }
-
-  static renderHouseBreaking(status: 0 | 1 | 2) {
-    switch (status) {
-      case 0:
-        return "ยังไม่ฝึกขับถ่าย";
-      case 1:
-        return "ฝึกขับถ่ายแล้ว";
-      default:
-        return "ไม่ระบุ";
-    }
+    return statusMappings[type][status] || statusMappings[type].default;
   }
 }
 

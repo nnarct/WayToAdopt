@@ -31,26 +31,26 @@ const PostDetail = ({ postID }: { postID: string }) => {
           {"  "}({UtilsService.formatAge(post.petDob)})
         </DescriptionCard>
         <DescriptionCard vertical title="เพศของสัตว์">
-          {UtilsService.renderGender(post.petGender)}
+          {UtilsService.renderStatus(post.petGender, "gender")}
         </DescriptionCard>
         <DescriptionCard vertical title="การรับการรักษา">
-          {UtilsService.renderVaccinated(post.petVaccinated)}
+          {UtilsService.renderStatus(post.petVaccinated, "vaccinated")}
         </DescriptionCard>
         <DescriptionCard vertical title="การทำหมัน">
-          {UtilsService.renderSterilized(post.petSterilized)}
+          {UtilsService.renderStatus(post.petSterilized, "sterilized")}
         </DescriptionCard>
         <DescriptionCard vertical title="การหย่านม">
-          {UtilsService.renderWean(post.petWean)}
+          {UtilsService.renderStatus(post.petWean, "wean")}
         </DescriptionCard>
         <DescriptionCard vertical title="การฝึกฝนการขับถ่าย">
-          {UtilsService.renderHouseBreaking(post.petHouseBreaking)}
+          {UtilsService.renderStatus(post.petHouseBreaking, "houseBreaking")}
         </DescriptionCard>
         <DescriptionCard
           className="sm:col-span-2"
           vertical
           title="รายละเอียดอื่นๆ"
         >
-          {post.petDetail || '-'}
+          {post.petDetail || "-"}
         </DescriptionCard>
       </div>
     );

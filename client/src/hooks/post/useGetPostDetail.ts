@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { useAuth } from "@/contexts/AuthContext";
 import { getPostDetailsUrl } from "@/assets/api";
 
 const useGetPostDetail = (postID: string) => {

@@ -1,4 +1,3 @@
-// const firebase = require("../firebaseConfig");
 const PostService = require("../services/PostService");
 const AuthenticationService = require("../services/AuthenticationService");
 

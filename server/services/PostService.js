@@ -1,10 +1,7 @@
 const PostModel = require("../models/Postmodel");
 const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
-
-
 class PostService {
-  
   static async getActivePosts() {
     try {
       const posts = await PostModel.getActivePosts();

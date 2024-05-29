@@ -2,6 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { getProfileUrl } from "@/assets/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { notification } from "antd";
 
 const useGetProfile = () => {
   const { token } = useAuth();
@@ -10,7 +11,7 @@ const useGetProfile = () => {
       const { data } = await axios.post(getProfileUrl, { token });
       return data;
     } catch (error) {
-      console.log({ error });
+      notification.error({ message: "Error while getting user profile" });
     }
   });
 };
