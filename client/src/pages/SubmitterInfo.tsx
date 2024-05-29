@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useParams } from "react-router-dom";
+import { Card, Descriptions, Typography } from "antd";
 import PostDetail from "@/components/PostDetail";
 import DescriptionCard from "@/components/shared/DescriptionCard";
 import { Loading, SomethingWentWrong } from "@/components/shared/Result";
 import useGetAnswer from "@/hooks/post/useGetAllAnswer";
 import useGetSubmitterInfo from "@/hooks/post/useGetSubmitterInfo";
-import { Card, Descriptions, Typography } from "antd";
-import React from "react";
-import { useParams } from "react-router-dom";
 
-type Props = {};
 
-const SubmitterInfo = (props: Props) => {
+const SubmitterInfo = () => {
   const { postID, userID } = useParams();
   if (!postID || !userID) {
     return <SomethingWentWrong />;
@@ -32,7 +30,6 @@ const SubmitterInfo = (props: Props) => {
   if (isError || isErrorAnswer) {
     return <SomethingWentWrong />;
   }
-  console.log({ data });
   return (
     <>
       <Typography.Title level={2}>ข้อมูลผู้สนใจรับเลี้ยง</Typography.Title>

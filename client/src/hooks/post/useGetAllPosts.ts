@@ -1,17 +1,13 @@
-// src/hooks/usePosts.ts
-import { useQuery } from "react-query";
 import axios from "axios";
-import { getAllPostUrl } from "@/assets/api";
-import { PostCard } from "@/assets/types";
+import { useQuery } from "react-query";
 
-const fetchPosts = async (): Promise<PostCard[]> => {
-  return axios.get(getAllPostUrl).then((response) => {
-    return response.data.data;
-  });
+const fetchPosts = async () => {
+  const response = await axios.get("/posts");
+  return response.data.posts;
 };
 
-const useGetAllPosts = () => {
+const usePosts = () => {
   return useQuery("posts", fetchPosts);
 };
 
-export default useGetAllPosts;
+export default usePosts;
