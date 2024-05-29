@@ -19,8 +19,8 @@ const MyPosts = () => {
   if (isError) {
     return <SomethingWentWrong />;
   }
-  if (posts.length === 0) {
-    return <NoPost />;
+  if (posts?.length === 0) {
+    return <NoPost myposts />;
   }
 
   return (
