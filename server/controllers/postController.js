@@ -3,10 +3,13 @@ const PostService = require("../services/PostService");
 const AuthenticationService = require("../services/AuthenticationService");
 
 class PostController {
-  static async getAllActivePost(req, res) {
+  constructor(authService, postService) {
+    this.authService = authService;
+    this.postService = postService;
+  }
+  async getAllActivePost(req, res) {
     try {
-      const allPosts = await PostService.getActivePosts();
-      console.log({ allPosts });
+      const allPosts = await  PostService.getActivePosts();
       res.status(201).json({ posts: allPosts });
     } catch (error) {
       return res.status(500).json({ message: error.message });
@@ -62,10 +65,7 @@ class PostController {
     const postId = req.body.postId;
     const token = req.body.token;
     try {
-      const hasAccess = await AuthenticationService.verifyPostOwner(
-        token,
-        postId
-      );
+      const hasAccess = await this.authService.verifyPostOwner(token, postId);
       if (!hasAccess) {
         return res
           .status(401)
@@ -84,10 +84,7 @@ class PostController {
     const userId = req.body.userId;
     const token = req.body.token;
     try {
-      const hasAccess = await AuthenticationService.verifyPostOwner(
-        token,
-        postId
-      );
+      const hasAccess = await this.authService.verifyPostOwner(token, postId);
       if (!hasAccess) {
         return res
           .status(401)

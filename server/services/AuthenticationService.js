@@ -2,7 +2,7 @@ const { auth } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
 
 class AuthenticationService {
-  static async createUser(email, password) {
+  async createUser(email, password) {
     try {
       const userRecord = await auth.createUser({
         email,
@@ -15,12 +15,16 @@ class AuthenticationService {
     }
   }
 
+  async getUidByToken(token) {
+    const dat = await auth.verifyIdToken(token);
+    return dat.uid;
+  }
   static async getUidByToken(token) {
     const dat = await auth.verifyIdToken(token);
     return dat.uid;
   }
-  
-  static async verifyPostOwner(token, postId) {
+
+  async verifyPostOwner(token, postId) {
     const post = new PostModel(postId);
     const ownerUid = await post.getUid();
     const userId = await this.getUidByToken(token);

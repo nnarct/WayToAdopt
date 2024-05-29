@@ -6,6 +6,9 @@ const AuthenticationService = require("./AuthenticationService");
 const { v4: uuidv4 } = require("uuid");
 
 class PostService {
+  constructor(authService) {
+    this.authService = authService;
+  }
   static async getActivePosts() {
     try {
       const posts = await PostModel.getActivePosts();

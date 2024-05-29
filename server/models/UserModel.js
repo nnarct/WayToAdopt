@@ -1,11 +1,11 @@
 const { db } = require("../firebaseConfig");
 class UserModel {
-  static async createUserDocument(userId, userData) {
+  async createUserDocument(userId, userData) {
     const userCollection = db.collection("user");
     return await userCollection.doc(userId).set(userData);
   }
 
-  static async getUserById(userId) {
+  async getUserById(userId) {
     const userCollection = db.collection("user");
     const userDoc = await userCollection.doc(userId).get();
     if (!userDoc.exists) {
