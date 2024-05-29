@@ -1,4 +1,4 @@
-import { Button,  Flex, Typography } from "antd";
+import { Button, Flex, Typography } from "antd";
 import DescriptionCard from "@/components/shared/DescriptionCard";
 import EditableProfilePage from "./EditableProfilePage";
 
@@ -45,7 +45,7 @@ const ProfilePage: React.FC = () => {
           {user.lastName}
         </DescriptionCard>
 
-        <DescriptionCard vertical title="วันเกิด (ค.ศ.)">
+        <DescriptionCard vertical title="วันเกิด">
           {UtilsService.formatDate(user.dob)}
         </DescriptionCard>
 
