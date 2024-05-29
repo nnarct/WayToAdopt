@@ -42,7 +42,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route element={<Layout />}>
-              <Route path="/*" element={<Page404 />} />
+              <Route path="*" element={<Page404 />} />
               <Route index element={<HomePage />} />
               <Route element={<PrivateRoute />}>
                 <Route path="/profile" element={<ProfilePage />} />
@@ -81,7 +81,7 @@ const PrivateRoute = () => {
       <Outlet />
     </ContentCard>
   ) : (
-    <Navigate to="/" replace />
+    <Navigate to="/login" replace />
   );
 };
 
