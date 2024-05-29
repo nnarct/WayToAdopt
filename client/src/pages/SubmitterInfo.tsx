@@ -7,7 +7,6 @@ import { Loading, SomethingWentWrong } from "@/components/shared/Result";
 import useGetAnswer from "@/hooks/post/useGetAllAnswer";
 import useGetSubmitterInfo from "@/hooks/post/useGetSubmitterInfo";
 
-
 const SubmitterInfo = () => {
   const { postID, userID } = useParams();
   if (!postID || !userID) {
@@ -59,6 +58,7 @@ const SubmitterInfo = () => {
               <Descriptions.Item
                 label={d.question}
                 className="whitespace-nowrap"
+                key={`${d.question}${d.answer}`}
               >
                 {d.answer}
               </Descriptions.Item>

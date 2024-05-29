@@ -4,7 +4,7 @@ const AuthenticationService = require("../services/AuthenticationService");
 class UserController {
   static async getUser(req, res) {
     try {
-      const user = await UserService.getUserByToken(req.token);
+      const user = await UserService.getUserByToken(req.body.token);
       res.status(201).json(user);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -12,7 +12,7 @@ class UserController {
   }
 
   static async getSubmitterInfo(req, res) {
-    const token = req.token;
+    const token = req.body.token;
     const postId = req.body.postId;
     const userId = req.body.userId;
     try {

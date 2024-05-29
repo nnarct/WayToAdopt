@@ -6,7 +6,7 @@ class PostController {
   static async getAllActivePost(req, res) {
     try {
       const allPosts = await PostService.getActivePosts();
-      console.log({allPosts })
+      console.log({ allPosts });
       res.status(201).json({ posts: allPosts });
     } catch (error) {
       return res.status(500).json({ message: error.message });
@@ -15,7 +15,7 @@ class PostController {
 
   static async getUserPosts(req, res) {
     try {
-      const allPosts = await PostService.retrieveUsersPosts(req.token);
+      const allPosts = await PostService.retrieveUsersPosts(req.body.token);
       return res.status(201).json({ posts: allPosts });
     } catch (error) {
       return res.status(500).json({ message: error.message });

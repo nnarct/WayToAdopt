@@ -10,7 +10,7 @@ import {
   notification,
 } from "antd";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import ImageDragger from "@/components/features/myPosts/ImageDragger";
@@ -229,7 +229,7 @@ const CreatePostPage = () => {
                 className="col-end-3"
                 loading={isLoading}
               >
-                สร้างคำถาม
+                สร้างโพสต์
               </Button>
             </Form>
           </Card>

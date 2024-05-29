@@ -33,25 +33,20 @@ const upload = multer({ storage: storage }); // initialize multer for file uploa
 app.post("/register", AuthController.createUser);
 
 //User
-app.get("/profile", verifyToken,UserController.getUser);
-app.post("/submitterinfo", verifyToken,UserController.getSubmitterInfo);
+app.post("/profile", UserController.getUser);
+app.post("/submitterinfo", UserController.getSubmitterInfo);
 
 //Post
 app.get("/posts", PostController.getAllActivePost);
 app.post("/postDetails", PostController.getPostById);
 app.post("/questions", PostController.getQuestions);
 app.post("/send-answer", PostController.sendAnswer);
-app.post("/myposts", verifyToken, PostController.getUserPosts);
+app.post("/myposts", PostController.getUserPosts);
 
 app.post("/answer", PostController.getAnswer);
 app.post("/all-answer-user-id", PostController.allAnswerUserIds);
 
-app.post(
-  "/createpost",
-
-  upload.single("file"),
-  PostController.createNewPost
-);
+app.post("/createpost", upload.single("file"), PostController.createNewPost);
 
 app.delete("/post", PostController.deletePost);
 app.put("/post", PostController.changePostStatus);
