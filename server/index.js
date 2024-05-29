@@ -9,16 +9,16 @@ const PostController = require("./controllers/postController");
 const AuthController = require("./controllers/authController");
 const UserController = require("./controllers/userController");
 const PetTypeController = require("./controllers/petTypeController");
-const verifyToken = require('./validators/verifyToken');
+const verifyToken = require("./validators/verifyToken");
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:2545"],
-    methods: ["POST", "GET", "DELETE", "PUT"],
-    credentials: true,
+    origin: "http://localhost:2545",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -29,25 +29,35 @@ const storage = multer.memoryStorage(); // set up in-memory storage for file upl
 const upload = multer({ storage: storage }); // initialize multer for file upload
 
 // Routes setup
-app.get("/posts", PostController.getAllActivePost);
 
 app.post("/register", AuthController.createUser);
-app.get("/myposts", verifyToken,PostController.getUserPosts);
-app.get("/profile",verifyToken, UserController.getUser);
-app.post("/submitterinfo",verifyToken, UserController.getSubmitterInfo);
 
+//User
+app.get("/profile", verifyToken,UserController.getUser);
+app.post("/submitterinfo", verifyToken,UserController.getSubmitterInfo);
+
+//Post
+app.get("/posts", PostController.getAllActivePost);
 app.post("/postDetails", PostController.getPostById);
 app.post("/questions", PostController.getQuestions);
-app.post("/send-answer",verifyToken, PostController.sendAnswer);
+app.post("/send-answer", PostController.sendAnswer);
+app.post("/myposts", verifyToken, PostController.getUserPosts);
 
-app.post("/answer",verifyToken, PostController.getAnswer);
-app.post("/all-answer-user-id",verifyToken, PostController.allAnswerUserIds);
+app.post("/answer", PostController.getAnswer);
+app.post("/all-answer-user-id", PostController.allAnswerUserIds);
 
-app.post("/createpost",verifyToken, upload.single("file"), PostController.createNewPost);
+app.post(
+  "/createpost",
 
-app.get("/pettypes", PetTypeController.getPetTypes);
+  upload.single("file"),
+  PostController.createNewPost
+);
+
 app.delete("/post", PostController.deletePost);
 app.put("/post", PostController.changePostStatus);
+
+//PetType
+app.get("/pettypes", PetTypeController.getPetTypes);
 
 // Start the server
 app.listen(port, () => {

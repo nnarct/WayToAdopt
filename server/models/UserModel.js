@@ -1,6 +1,6 @@
 const { db } = require("../firebaseConfig");
 class UserModel {
-  static async createUser(userId, userData) {
+  static async createUserDocument(userId, userData) {
     const userCollection = db.collection("user");
     return await userCollection.doc(userId).set(userData);
   }
@@ -14,15 +14,15 @@ class UserModel {
     return { id: userDoc.id, ...userDoc.data() };
   }
 
-  async updateUser(userId, userData) {
-    await this.userCollection.doc(userId).update(userData);
-    const updatedUserDoc = await this.userCollection.doc(userId).get();
-    return { id: updatedUserDoc.id, ...updatedUserDoc.data() };
-  }
+  // async updateUser(userId, userData) {
+  //   await this.userCollection.doc(userId).update(userData);
+  //   const updatedUserDoc = await this.userCollection.doc(userId).get();
+  //   return { id: updatedUserDoc.id, ...updatedUserDoc.data() };
+  // }
 
-  async deleteUser(userId) {
-    await this.userCollection.doc(userId).delete();
-  }
+  // async deleteUser(userId) {
+  //   await this.userCollection.doc(userId).delete();
+  // }
 }
 
 module.exports = UserModel;

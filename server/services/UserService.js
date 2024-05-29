@@ -3,8 +3,8 @@ const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
 
 class UserService {
-  static async createUserDocument(uid, userData) {
-    await UserModel.createUser(uid, userData);
+  static async createUser(uid, userData) {
+    await UserModel.createUserDocument(uid, userData);
   }
 
   static async getUserByToken(token) {
@@ -13,15 +13,15 @@ class UserService {
     return user;
   }
 
-  async updateUser(userId, userData) {
-    return await this.userModel.updateUser(userId, userData);
-  }
   static async getSubmitterInfo(userId) {
     const user = await UserModel.getUserById(userId);
     const { firstName, lastName, tel, email } = user;
     return { firstName, lastName, tel, email };
   }
-
+  
+  // async updateUser(userId, userData) {
+  //   return await this.userModel.updateUser(userId, userData);
+  // }
   // async deleteUser(userId) {
   //   await this.userModel.deleteUser(userId);
   //   await admin.auth().deleteUser(userId);

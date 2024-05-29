@@ -42,7 +42,7 @@ class PostController {
   static async sendAnswer(req, res) {
     const postId = req.body.postId;
     const answers = req.body.answers;
-    const token = req.token;
+    const token = req.body.token;
     const userId = await AuthenticationService.getUidByToken(token);
     try {
       const questions = await PostService.submitAnswers(
@@ -59,7 +59,7 @@ class PostController {
 
   static async allAnswerUserIds(req, res) {
     const postId = req.body.postId;
-    const token = req.token;
+    const token = req.body.token;
     try {
       const hasAccess = await AuthenticationService.verifyPostOwner(
         token,
@@ -81,7 +81,7 @@ class PostController {
   static async getAnswer(req, res) {
     const postId = req.body.postId;
     const userId = req.body.userId;
-    const token = req.token;
+    const token = req.body.token;
     try {
       const hasAccess = await AuthenticationService.verifyPostOwner(
         token,
@@ -106,7 +106,8 @@ class PostController {
       const photoUri = await PostService.uploadPhoto(file);
       const post = JSON.parse(req.body.post);
       post.petPic = photoUri;
-      const resp = await PostService.createPost(post, req.token);
+      console.log({ req });
+      const resp = await PostService.createPost(post, req.body.token);
       return res.status(201).json(resp);
     } catch (error) {
       return res.status(500).send({ message: error.message });

@@ -10,7 +10,7 @@ class AuthController {
         password
       );
       if (uid) {
-        await UserService.createUserDocument(uid, userData);
+        await UserService.createUser(uid, userData);
       } else return res.status(200).json({message: "Email is already in used."})
       return res
         .status(201)

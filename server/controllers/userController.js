@@ -2,15 +2,6 @@ const UserService = require("../services/UserService");
 const AuthenticationService = require("../services/AuthenticationService");
 
 class UserController {
-  async createUser(req, res) {
-    try {
-      const user = await UserService.createUser(req.body);
-      res.status(201).json(user);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  }
-
   static async getUser(req, res) {
     try {
       const user = await UserService.getUserByToken(req.token);
@@ -40,7 +31,6 @@ class UserController {
       res.status(500).json({ error: error.message });
     }
   }
- 
 }
 
 module.exports = UserController;

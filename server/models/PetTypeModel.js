@@ -8,7 +8,7 @@ class PetTypeModel {
   async getName() {
     const petTypeDoc = await this.petTypeRef?.get();
     if (!petTypeDoc.exists) {
-      throw new Error('Pet type does not exist');
+      throw new Error("Pet type does not exist");
     }
     const petTypeData = petTypeDoc.data();
     // console.log({petTypeData})
@@ -28,12 +28,9 @@ class PetTypeModel {
   }
 
   static async getRefById(id) {
-    const pet = db.collection('petTypes').doc(id).get();
-
-    if (!pet.exists) {
-     return null
-    }
-    return pet.ref;
+    const pet = db.collection("petTypes").doc(id);
+    const petDoc = await pet.get();
+    return petDoc.ref | null;
   }
 }
 

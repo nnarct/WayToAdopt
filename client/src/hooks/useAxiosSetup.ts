@@ -1,21 +1,23 @@
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEffect } from "react";
+import axios from "axios";
+import { useAuth } from "@/contexts/AuthContext";
 
 const useAxiosSetup = () => {
   const { token } = useAuth();
+  axios.defaults.baseURL = "http://localhost:3001";
 
   useEffect(() => {
-    axios.defaults.baseURL = 'http://localhost:3001';
-
     const requestInterceptor = axios.interceptors.request.use(
-      config => {
+      (config) => {
         if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
+          config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
       },
-      error => Promise.reject(error)
+      (error) => {
+        // console.error("Request error:", error);
+        return Promise.reject(error);
+      }
     );
 
     return () => {
