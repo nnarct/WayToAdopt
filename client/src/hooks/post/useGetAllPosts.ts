@@ -2,8 +2,12 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 const fetchPosts = async () => {
-  const response = await axios.get("/posts");
-  return response.data.posts;
+  try {
+    const response = await axios.get("/posts");
+    return response.data.posts;
+  } catch (error) {
+    console.log({ error });
+  }
 };
 
 const usePosts = () => {

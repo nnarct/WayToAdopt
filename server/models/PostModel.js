@@ -26,30 +26,32 @@ class PostModel {
 
   static async getUserPosts(userId) {
     const postCollection = db.collection("post");
-  
+
     const snapshot = await postCollection
       .where("userID", "==", userId)
       .select("postTitle", "petPic", "petType", "petDob", "status")
       .get();
-  
+
     const posts = await Promise.all(
       snapshot.docs.map(async (doc) => {
         const postData = doc.data();
         let petTypeName = null;
-  
+
         if (postData.petType) {
           try {
             const petTypeDoc = await postData.petType.get();
             if (petTypeDoc.exists) {
               petTypeName = petTypeDoc.data().name;
             } else {
-              console.warn(`Pet type document does not exist for post: ${doc.id}`);
+              console.warn(
+                `Pet type document does not exist for post: ${doc.id}`
+              );
             }
           } catch (error) {
             console.error(`Error fetching pet type for post: ${doc.id}`, error);
           }
         }
-  
+
         return {
           id: doc.id,
           ...postData,
@@ -57,10 +59,9 @@ class PostModel {
         };
       })
     );
-  
+
     return posts;
   }
-  
 
   static async getPostById(id) {
     const postRef = db.collection("post").doc(id);
@@ -73,7 +74,7 @@ class PostModel {
       return {
         id: doc.id,
         ...postData,
-        petType: petTypeName,
+        petType: await petType.getName(),
       };
     } else {
       console.log("post doens't exist");
@@ -227,10 +228,11 @@ class PostModel {
         const petTypeData = postData.petType
           ? await postData.petType.get()
           : null;
+        console.log("petTypeData");
         return {
           id: doc.id,
           ...postData,
-          petType: petTypeData ? petTypeData.data().name : null,
+          petType: petTypeData ? petTypeData.data()?.name : null,
         };
       })
     );
@@ -262,7 +264,7 @@ class PostModel {
 
   static async createPost(data, userId) {
     const petTypeRef = await PetTypeModel.getRefById(data.petType);
-    if(!petTypeRef) throw new Error('Pet type ref')
+    if (!petTypeRef) throw new Error("Pet type ref");
     const postRef = await db.collection("post").add({
       postTitle: data.postTitle,
       petBreed: data.petBreed,

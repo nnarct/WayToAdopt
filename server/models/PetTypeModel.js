@@ -11,7 +11,6 @@ class PetTypeModel {
       throw new Error("Pet type does not exist");
     }
     const petTypeData = petTypeDoc.data();
-    // console.log({petTypeData})
     return petTypeData.name;
   }
 
