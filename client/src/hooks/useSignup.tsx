@@ -10,6 +10,12 @@ const registerUser = async (userData: SignupType) => {
     const response = await axios.post(signupUrl, userData);
     return { data: response.data, status: response.status };
   } catch (error) {
+    if (
+      error.response?.data &&
+      error.response?.data === "The email address is improperly formatted."
+    )
+      return { data: { message: "Invalid email format" }, status: 500 };
+
     return { data: { message: "Registration failed" }, status: 500 };
   }
 };
