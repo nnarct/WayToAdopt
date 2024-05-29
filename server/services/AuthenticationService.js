@@ -2,7 +2,7 @@ const { auth } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
 
 class AuthenticationService {
-  async createUser(email, password) {
+  static async createUser(email, password) {
     if (!email || !password) throw new Error("Email or password is missing.");
     try {
       const userRecord = await auth.createUser({

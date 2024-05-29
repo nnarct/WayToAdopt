@@ -1,15 +1,11 @@
-import { Button, Row, Col, Flex, Typography } from "antd";
+import { Button,  Flex, Typography } from "antd";
 import DescriptionCard from "@/components/shared/DescriptionCard";
-
-import dayjs from "dayjs";
 import EditableProfilePage from "./EditableProfilePage";
 
 import { useAuth } from "@/contexts/AuthContext";
-import "dayjs/locale/th";
 import useGetProfile from "@/hooks/useGetProfile";
 import { Loading, SomethingWentWrong } from "@/components/shared/Result";
-
-dayjs.locale("th");
+import UtilsService from "@/services/UtilsService";
 
 const ProfilePage: React.FC = () => {
   const { clearAuth } = useAuth();
@@ -50,7 +46,7 @@ const ProfilePage: React.FC = () => {
         </DescriptionCard>
 
         <DescriptionCard vertical title="วันเกิด (ค.ศ.)">
-          {dayjs(user.dob).format("DD MMM YYYY")}
+          {UtilsService.formatDate(user.dob)}
         </DescriptionCard>
 
         <DescriptionCard vertical title="เพศ">

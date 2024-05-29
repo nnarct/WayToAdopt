@@ -1,14 +1,10 @@
-const { db, bucket } = require("../firebaseConfig");
 const PostModel = require("../models/Postmodel");
-const PetTypeModel = require("../models/PetTypeModel");
 const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
-const { v4: uuidv4 } = require("uuid");
+
 
 class PostService {
-  constructor(authService) {
-    this.authService = authService;
-  }
+  
   static async getActivePosts() {
     try {
       const posts = await PostModel.getActivePosts();

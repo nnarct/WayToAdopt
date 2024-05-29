@@ -2,15 +2,15 @@ const UserModel = require("../models/UserModel");
 const AuthenticationService = require("./AuthenticationService");
 
 class UserService {
-  async createUser(uid, userData) {
+  static async createUser(uid, userData) {
     const { firstName, lastName, tel, gender, dob } = userData;
-    if (firstName || lastName || tel || gender || dob)
+    if (!firstName || !lastName || !tel || !gender || !dob)
       throw new Error("Some data is missing");
-    if (typeof dob !== Number) throw new Error("Dob must be epoch number");
+    if (typeof dob !== "number") throw new Error("Dob must be epoch number");
     await UserModel.createUserDocument(uid, userData);
   }
 
-  async getUserByToken(token) {
+  static async getUserByToken(token) {
     if (!token) throw new Error("Token is missing.");
     const uid = await AuthenticationService.getUidByToken(token);
     if (!uid) throw new Error("User ID is not found, Invalid token");

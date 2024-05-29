@@ -1,6 +1,6 @@
 const { db } = require("../firebaseConfig");
 class UserModel {
-  async createUserDocument(userId, userData) {
+  static async createUserDocument(userId, userData) {
     const userCollection = db.collection("user");
     return await userCollection.doc(userId).set(userData);
   }
@@ -13,7 +13,6 @@ class UserModel {
     }
     return { id: userDoc.id, ...userDoc.data() };
   }
-
 }
 
 module.exports = UserModel;
