@@ -39,16 +39,6 @@ export interface UserProfileType {
   gender: 0 | 1; //0male 1female
 }
 
-export interface PostDetailsType {
-  id: string;
-  postTitle: string;
-  petType: string;
-  petBreed: string;
-  petDob: number;
-  status: number;
-  petPic: string;
-}
-
 export interface PostCard {
   id: string;
   postTitle: string;
@@ -81,6 +71,15 @@ export interface AnswersType {
   questionId: string;
   answer: string;
 }
+
+export interface ImageDraggerPhotoType {
+  file: File | null;
+  filename: string;
+  image: string;
+}
+
+// todo : create post data type
+
 // export interface Post {
 //   postTitle: string;
 //   petPic: string;
@@ -94,10 +93,3 @@ export interface AnswersType {
 //   petVaccinated: string;
 //   petWean: string;
 // }
-
-export interface ImageDraggerPhotoType {
-  file: File | null;
-  filename: string;
-  image: string;
-}
-// todo : create post data type
