@@ -2,13 +2,8 @@ const AuthenticationService = require("../services/AuthenticationService");
 const UserService = require("../services/UserService");
 
 class UserController {
-  constructor() {;
 
-    this.getUser = this.getUser.bind(this);
-    this.getSubmitterInfo = this.getSubmitterInfo.bind(this);
-  }
-  
-  async getUser(req, res) {
+  static async getUser(req, res) {
     try {
       const user = await UserService.getUserByToken(req.body.token);
       res.status(201).json(user);
@@ -17,7 +12,7 @@ class UserController {
     }
   }
 
-  async getSubmitterInfo(req, res) {
+  static async getSubmitterInfo(req, res) {
     const token = req.body.token;
     const postId = req.body.postId;
     const userId = req.body.userId;

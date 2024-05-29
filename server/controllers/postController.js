@@ -3,11 +3,7 @@ const PostService = require("../services/PostService");
 const AuthenticationService = require("../services/AuthenticationService");
 
 class PostController {
-  constructor(authService, postService) {
-    this.authService = authService;
-    this.postService = postService;
-  }
-  async getAllActivePost(req, res) {
+  static async getAllActivePost(req, res) {
     try {
       const allPosts = await  PostService.getActivePosts();
       res.status(201).json({ posts: allPosts });

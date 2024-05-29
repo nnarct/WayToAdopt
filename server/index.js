@@ -9,16 +9,6 @@ const PostController = require("./controllers/postController");
 const AuthController = require("./controllers/authController");
 const UserController = require("./controllers/userController");
 const PetTypeController = require("./controllers/petTypeController");
-const UserService = require("./services/UserService");
-const AuthenticationService = require("./services/AuthenticationService");
-const PostService = require("./services/PostService");
-
-const authenticationService = new AuthenticationService();
-
-const postService = new PostService(authenticationService);
-
-const userController = new UserController();
-const postController = new PostController(authenticationService, postService);
 
 const app = express();
 app.use(express.json());
@@ -42,11 +32,11 @@ const upload = multer({ storage: storage }); // initialize multer for file uploa
 app.post("/register", AuthController.createUser);
 
 //User
-app.post("/profile", userController.getUser);
-app.post("/submitterinfo", userController.getSubmitterInfo);
+app.post("/profile", UserController.getUser);
+app.post("/submitterinfo", UserController.getSubmitterInfo);
 
 //Post
-app.get("/posts", postController.getAllActivePost);
+app.get("/posts", PostController.getAllActivePost);
 app.post("/postDetails", PostController.getPostById);
 app.post("/questions", PostController.getQuestions);
 app.post("/send-answer", PostController.sendAnswer);
