@@ -9,6 +9,7 @@ const PostController = require("./controllers/postController");
 const AuthController = require("./controllers/authController");
 const UserController = require("./controllers/userController");
 const PetTypeController = require("./controllers/petTypeController");
+const verifyToken = require('./validators/verifyToken');
 
 const app = express();
 app.use(express.json());
@@ -28,22 +29,22 @@ const storage = multer.memoryStorage(); // set up in-memory storage for file upl
 const upload = multer({ storage: storage }); // initialize multer for file upload
 
 // Routes setup
-// app.post('/user-profile', UserController.getUserProfile);
-app.get("/posts", PostController.retrieveAllActivePost);
-// app.use("/api", userRoutes);
-// app.post("/register", Validator.createUser, AuthController.createUser);
+app.get("/posts", PostController.getAllActivePost);
+
 app.post("/register", AuthController.createUser);
-// app.post("/login",  AuthController.loginUser);
-app.post("/myposts", PostController.retrievePostsByUser);
-app.post("/profile", UserController.getUserByToken);
+app.get("/myposts", verifyToken,PostController.getUserPosts);
+app.get("/profile",verifyToken, UserController.getUser);
+app.post("/submitterinfo",verifyToken, UserController.getSubmitterInfo);
+
 app.post("/postDetails", PostController.getPostById);
 app.post("/questions", PostController.getQuestions);
-app.post("/send-answer", PostController.sendAnswer);
-app.post("/send-answer", PostController.sendAnswer);
-app.post("/answer", PostController.getAnswer);
-app.post("/all-answer-user-id", PostController.allAnswerUserIds);
-app.post("/submitterinfo", UserController.getSubmitterInfo);
-app.post("/createpost", upload.single("file"), PostController.createNewPost);
+app.post("/send-answer",verifyToken, PostController.sendAnswer);
+
+app.post("/answer",verifyToken, PostController.getAnswer);
+app.post("/all-answer-user-id",verifyToken, PostController.allAnswerUserIds);
+
+app.post("/createpost",verifyToken, upload.single("file"), PostController.createNewPost);
+
 app.get("/pettypes", PetTypeController.getPetTypes);
 app.delete("/post", PostController.deletePost);
 app.put("/post", PostController.changePostStatus);

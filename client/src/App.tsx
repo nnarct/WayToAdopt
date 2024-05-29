@@ -21,10 +21,12 @@ import ContentCard from "@/components/shared/ContentCard";
 import Page404 from "@/components/shared/Page404";
 import SubmitSuccess from "@/pages/SubmitSuccess";
 import { useAuth } from "@/contexts/AuthContext";
-import SubmitterInfo from "./pages/SubmitterInfo";
-import CreatePostPage from "./pages/CreatePostPage";
+import SubmitterInfo from "@/pages/SubmitterInfo";
+import CreatePostPage from "@/pages/CreatePostPage";
+import useAxiosSetup from "@/hooks/useAxiosSetup";
 
 const App = () => {
+  useAxiosSetup();
   return (
     <>
       <ConfigProvider
@@ -39,10 +41,6 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-          
-
-            {/* <Route path="/petdetails/:postID" element={<PostIDforDetailTest />} /> */}
-            {/* <Route path="/petdetails" element={<PostDetail />} /> */}
             <Route element={<Layout />}>
               <Route path="/*" element={<Page404 />} />
               <Route index element={<HomePage />} />
@@ -64,10 +62,7 @@ const App = () => {
                   path="/petdetails/:postID"
                   element={<PetDetailsPage />}
                 />
-                <Route
-                  path="/submitSuccess"
-                  element={<SubmitSuccess />}
-                />
+                <Route path="/submitSuccess" element={<SubmitSuccess />} />
               </Route>
             </Route>
           </Routes>
